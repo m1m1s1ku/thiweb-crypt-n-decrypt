@@ -5,7 +5,7 @@ Decrypt automatically links on the forum ! | Chrome extension for Forum.ThiWeb.c
 
 - Go to chrome settings
 - "Extensions" tab
-- Drop packed extension (.crx) or "Load unpacked extension" after git clone
+- Drop packed extension ( .crx from [here](https://github.com/Ghostfly/ThiWeb-Chrome/releases) ) or "Load unpacked extension" after git clone
 
 ## Dev :
 - Load unpacked extension
