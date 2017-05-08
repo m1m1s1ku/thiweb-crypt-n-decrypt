@@ -3,6 +3,11 @@ Decrypt automatically links on the forum ! | Chrome extension for Forum.ThiWeb.c
 
 ## Install :
 
--> Go to chrome settings
--> "Extensions" tab
--> Drop packed extension (.crx) or "Load unpacked extension" after git clone
+- Go to chrome settings
+- "Extensions" tab
+- Drop packed extension (.crx) or "Load unpacked extension" after git clone
+
+## Dev :
+- Load unpacked extension
+- The main code is in inject/inject.js
+- The Popup is in page_action/page_action.html
