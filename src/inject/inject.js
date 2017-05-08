@@ -51,12 +51,12 @@ chrome.extension.sendMessage({}, function(response) {
        */
       function getAllLinks() {
         let codes = document.getElementsByTagName('code');
-				for(var i = 0; i < codes.length; i++){
-					codes[i].innerHTML = codes[i].innerHTML.trim();
-					if (codes[i].innerHTML.startsWith("TWL2")) {
+        for (var i = 0; i < codes.length; i++) {
+          codes[i].innerHTML = codes[i].innerHTML.trim();
+          if (codes[i].innerHTML.startsWith("TWL2")) {
             getFromZerawApi(codes[i]);
           }
-				}
+        }
       }
 
       /**
