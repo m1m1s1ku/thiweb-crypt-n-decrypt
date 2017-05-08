@@ -11,6 +11,25 @@
 			background-color: #333;
 			color: #f0f0f0;
 		}
+		button {
+			border: 1px solid #939393;
+	    background: #333;
+	    border-radius: 3px;
+	    color: #939393;
+	    transition: all .3s;
+	    outline: none;
+	    margin: 5px 15px;
+		}
+		form {
+			text-align: center;
+		}
+		input {
+	    background-color: #939393;
+	    border: 1px solid #919191;
+	    padding: 2px;
+	    color: #f0f0f0;
+	    border-radius: 2px;
+		}
 		a {
 			color: #1a7ea6;
 			text-decoration: none;
@@ -25,13 +44,23 @@
 			width: 50px;
 			margin: 0 auto;
 		}
+		#notifCopy {
+			display: none;
+		}
 	</style>
 </head>
 <body>
 	<div id="popup">
 		<img id="logo" src="https://www.thiweb.com/img/logo.svg" alt="Logo TW">
-		<p>Naviguez sur une page contenant un ou plusieurs liens cryptés sur le forum. <br>Ils se décrypteront et seront cliquables automatiquement ! <b>;-)</b></p>
-		<p>ThiWeb Creative</p>
+		<h4>Cryptage</h4>
+		<form id="cryptForm">
+			<input type="text" id="toCrypt" name="toCrypt" />
+			<button type="submit" id="btnCrypt">Crypter</button>
+		</form>
+		<input id="ghost" />
+		<h4 id="notifCopy">Copié avec succès !</h4>
+		<h4>Décryptage actif</h4>
 	</div>
+	<script src="action.js"></script>
 </body>
 </html>
