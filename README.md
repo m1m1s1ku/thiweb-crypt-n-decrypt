@@ -4,9 +4,12 @@ Decrypt automatically links on the forum ! | Chrome extension for Forum.ThiWeb.c
 ## Install : [Chrome Web Store](https://chrome.google.com/webstore/detail/thiweb-auto-decrypt/noadaplbhpacekfmbhojlbldckniffce?hl=fr)
 
 ### Manual :
+
+Avoid this method, except for development
+
 - Go to chrome settings
 - "Extensions" tab
-- Drop packed extension ( .crx from [here](https://github.com/Ghostfly/ThiWeb-Chrome/releases) ) or "Load unpacked extension" after git clone
+- "Load unpacked extension" after git clone
 
 ## Dev :
 - Load unpacked extension
