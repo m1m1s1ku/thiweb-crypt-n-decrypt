@@ -25,7 +25,6 @@ function getAllLinks() {
     codes[i].innerHTML = codes[i].innerHTML.trim(); // Remove spaces
     // If TWL code
     if (!codes[i].innerHTML.startsWith("TWL2")) {
-      codes[i].remove();
     }
   }
   getFromZerawApi(codes); // Get current code from api
@@ -107,9 +106,9 @@ function parseAndReplaceUrls(strParse) {
 function getFromZerawApi(elems) {
   var finalReq = "";
   for(let i = 0; i < elems.length; i++){
-    if(i != elems.length-1){
+    if(i != elems.length-1 && elems[i].innerHTML.startsWith("TWL")){
       finalReq += elems[i].innerHTML + ",";
-    } else {
+    } else if(elems[i].innerHTML.startsWith("TWL")){
       finalReq += elems[i].innerHTML;
     }
   }
@@ -121,7 +120,9 @@ function getFromZerawApi(elems) {
         let res = JSON.parse(this.responseText);
         let decodeArray = res.message.split(",");
         for(let i = 0; i < decodeArray.length; i++){
-          elems[i].innerHTML = parseAndReplaceUrls(decodeArray[i]);
+          if(elems[i].innerHTML.startsWith("TWL")){
+            elems[i].innerHTML = parseAndReplaceUrls(decodeArray[i]);
+          }
         }
       } else {
         console.error("Erreur serveur", this.status, this.statusText);
