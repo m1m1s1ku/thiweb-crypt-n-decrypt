@@ -5,7 +5,7 @@ Decrypt automatically links on the forum ! | Chrome extension for Forum.ThiWeb.c
 
 ### Manual :
 
-Avoid this method, except for development
+Avoid this method, except for development ( Store extensions stay updated, not unpacked ;) )
 
 - Go to chrome settings
 - "Extensions" tab
