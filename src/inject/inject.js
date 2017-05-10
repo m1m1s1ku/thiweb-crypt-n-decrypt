@@ -116,10 +116,13 @@ function getFromZerawApi(elems) {
         let decodeArray = res.message.split(",");
         let codedArray = res.coded.split(",");
 
+        var countT = 0;
+
         for(let v = 0; v < elems.length; v++){
-          if(elems[v].innerHTML == codedArray[v]){
-            elems[v].innerHTML = parseAndReplaceUrls(decodeArray[v]); // Sync index with countDiff ;)
-          }
+            if(elems[v].innerHTML.trim() == codedArray[countT]){
+              elems[v].innerHTML = parseAndReplaceUrls(decodeArray[countT]); // Sync index with countDiff ;)
+              countT++;
+            }
         }
       } else {
         console.error("Erreur serveur", this.status, this.statusText);
