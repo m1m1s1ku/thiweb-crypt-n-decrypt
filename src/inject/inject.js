@@ -23,9 +23,6 @@ function getAllLinks() {
   let codes = document.getElementsByTagName('code'); // Get all codes elements
   for (let i = 0; i < codes.length; i++) {
     codes[i].innerHTML = codes[i].innerHTML.trim(); // Remove spaces
-    // If TWL code
-    if (!codes[i].innerHTML.startsWith("TWL2")) {
-    }
   }
   getFromZerawApi(codes); // Get current code from api
 }
@@ -104,24 +101,31 @@ function parseAndReplaceUrls(strParse) {
  * @param elem : HTML element
  */
 function getFromZerawApi(elems) {
-  var finalReq = "";
+  let finalReq = "";
   for(let i = 0; i < elems.length; i++){
-    if(i != elems.length-1 && elems[i].innerHTML.startsWith("TWL")){
-      finalReq += elems[i].innerHTML + ",";
-    } else if(elems[i].innerHTML.startsWith("TWL")){
-      finalReq += elems[i].innerHTML;
+    if(elems[i].innerHTML.trim().startsWith("TWL")){
+      finalReq += elems[i].innerHTML.trim() + ",";
     }
   }
+  finalReq = finalReq.slice(0, -1);
+
   const req = new XMLHttpRequest();
+  let test = document.getElementsByTagName('code');
+  let countDiff = 0;
+  for(let i = 0; i < test.length; i++){
+    if(!test[i].innerHTML.trim().startsWith("TWL")){
+      countDiff++;
+    }
+  }
 
   req.onreadystatechange = function(event) {
     if (this.readyState === XMLHttpRequest.DONE) {
       if (this.status === 200) {
         let res = JSON.parse(this.responseText);
         let decodeArray = res.message.split(",");
-        for(let i = 0; i < decodeArray.length; i++){
-          if(elems[i].innerHTML.startsWith("TWL")){
-            elems[i].innerHTML = parseAndReplaceUrls(decodeArray[i]);
+        for(let v = 0; v < elems.length; v++){
+          if(elems[v].innerHTML.startsWith("TWL")){
+            elems[v].innerHTML = parseAndReplaceUrls(decodeArray[v-countDiff]);
           }
         }
       } else {
