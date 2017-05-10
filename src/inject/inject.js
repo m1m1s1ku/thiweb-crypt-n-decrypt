@@ -102,21 +102,18 @@ function parseAndReplaceUrls(strParse) {
  */
 function getFromZerawApi(elems) {
   let finalReq = "";
+  let countDiff = 0;
+
   for(let i = 0; i < elems.length; i++){
     if(elems[i].innerHTML.trim().startsWith("TWL")){
       finalReq += elems[i].innerHTML.trim() + ",";
+    } else {
+      countDiff++;
     }
   }
   finalReq = finalReq.slice(0, -1);
 
   const req = new XMLHttpRequest();
-  let test = document.getElementsByTagName('code');
-  let countDiff = 0;
-  for(let i = 0; i < test.length; i++){
-    if(!test[i].innerHTML.trim().startsWith("TWL")){
-      countDiff++;
-    }
-  }
 
   req.onreadystatechange = function(event) {
     if (this.readyState === XMLHttpRequest.DONE) {
