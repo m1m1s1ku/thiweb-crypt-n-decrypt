@@ -24,10 +24,11 @@ function getAllLinks() {
   for (let i = 0; i < codes.length; i++) {
     codes[i].innerHTML = codes[i].innerHTML.trim(); // Remove spaces
     // If TWL code
-    if (codes[i].innerHTML.startsWith("TWL2")) {
-      getFromZerawApi(codes[i]); // Get current code from api
+    if (!codes[i].innerHTML.startsWith("TWL2")) {
+      codes[i].remove();
     }
   }
+  getFromZerawApi(codes); // Get current code from api
 }
 
 /**
@@ -103,19 +104,24 @@ function parseAndReplaceUrls(strParse) {
  * Get decoded strings from Zeraw's api
  * @param elem : HTML element
  */
-function getFromZerawApi(elem) {
+function getFromZerawApi(elems) {
+  var finalReq = "";
+  for(let i = 0; i < elems.length; i++){
+    if(i != elems.length-1){
+      finalReq += elems[i].innerHTML + ",";
+    } else {
+      finalReq += elems[i].innerHTML;
+    }
+  }
   const req = new XMLHttpRequest();
 
   req.onreadystatechange = function(event) {
     if (this.readyState === XMLHttpRequest.DONE) {
       if (this.status === 200) {
         let res = JSON.parse(this.responseText);
-        // Parsing response
-        res.message.raw = parseAndReplaceUrls(res.message.raw);
-        if (res.message.raw !== undefined) {
-          elem.innerHTML = res.message.raw;
-        } else {
-          elem.innerHTML = "Erreur pendant le décryptage automatique";
+        let decodeArray = res.message.split(",");
+        for(let i = 0; i < decodeArray.length; i++){
+          elems[i].innerHTML = parseAndReplaceUrls(decodeArray[i]);
         }
       } else {
         console.error("Erreur serveur", this.status, this.statusText);
@@ -123,7 +129,7 @@ function getFromZerawApi(elem) {
     }
   };
 
-  req.open("GET", "https://live.thiweb.com/api.php?decode&str=" + elem.innerHTML, true);
+  req.open("GET", "https://live.thiweb.com/api.php?decodeMultiple&str="+finalReq, true);
   req.send(null);
 }
 
