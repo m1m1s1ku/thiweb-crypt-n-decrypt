@@ -21,9 +21,6 @@ function checkConnect() {
  */
 function getAllLinks() {
   let codes = document.getElementsByTagName('code'); // Get all codes elements
-  for (let i = 0; i < codes.length; i++) {
-    codes[i].innerHTML = codes[i].innerHTML.trim(); // Remove spaces
-  }
   getFromZerawApi(codes); // Get current code from api
 }
 
@@ -102,13 +99,10 @@ function parseAndReplaceUrls(strParse) {
  */
 function getFromZerawApi(elems) {
   let finalReq = "";
-  let countDiff = 0;
 
   for(let i = 0; i < elems.length; i++){
     if(elems[i].innerHTML.trim().startsWith("TWL")){
       finalReq += elems[i].innerHTML.trim() + ","; // add param to url
-    } else {
-      countDiff++; // Count difference between <code>encoded</code> and <code>Normal</code> to avoid index de-sync
     }
   }
   finalReq = finalReq.slice(0, -1);
@@ -120,9 +114,11 @@ function getFromZerawApi(elems) {
       if (this.status === 200) {
         let res = JSON.parse(this.responseText);
         let decodeArray = res.message.split(",");
+        let codedArray = res.coded.split(",");
+
         for(let v = 0; v < elems.length; v++){
-          if(elems[v].innerHTML.startsWith("TWL")){
-            elems[v].innerHTML = parseAndReplaceUrls(decodeArray[v-countDiff]); // Sync index with countDiff ;)
+          if(elems[v].innerHTML == codedArray[v]){
+            elems[v].innerHTML = parseAndReplaceUrls(decodeArray[v]); // Sync index with countDiff ;)
           }
         }
       } else {
