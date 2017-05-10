@@ -1,11 +1,13 @@
-var form = document.getElementById("cryptForm"), ghost = document.getElementById("ghost");
+let form = document.getElementById("cryptForm");
+let  ghost = document.getElementById("ghost");
 
+// On form submit
 form.addEventListener("submit", function(event){
-  event.preventDefault();
-  console.log(event.target[0].value);
-  getFromZerawApi(event.target[0].value);
+  event.preventDefault(); // Prevent default behavior
+  getFromZerawApi(event.target[0].value); // Get asked string
   setTimeout(function(){
-    ghost.select();
+    ghost.select(); // Select input
+    // Copy to user clipboard
     if(document.execCommand('copy')){
       document.getElementById('notifCopy').style.display = "block";
     }
@@ -19,8 +21,8 @@ function getFromZerawApi(elem) {
   xmlhttp.onreadystatechange = function() {
     if (xmlhttp.readyState == XMLHttpRequest.DONE) {
       if (xmlhttp.status == 200) {
-        var res = JSON.parse(xmlhttp.responseText);
-        ghost.value = res.message;
+        let res = JSON.parse(xmlhttp.responseText);
+        ghost.value = res.message; // Write in input response
       } else {
         console.error("Erreur pendant le cryptage");
       }
