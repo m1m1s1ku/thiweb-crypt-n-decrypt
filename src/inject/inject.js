@@ -131,7 +131,9 @@ function getFromZerawApi(elems) {
   };
 
   req.open("GET", "https://live.thiweb.com/api.php?decodeMultiple&str="+finalReq, true);
-  req.send(null);
+  if(finalReq !== ""){
+    req.send(null);
+  }
 }
 
 chrome.extension.sendMessage({}, function(response) {
