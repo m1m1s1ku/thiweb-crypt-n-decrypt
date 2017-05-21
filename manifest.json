@@ -16,13 +16,14 @@
     ],
     "persistent": true
   },
-  "page_action": {
+  "browser_action": {
     "default_icon": "icons/icon19.png",
     "default_title": "ThiWeb Decrypt",
     "default_popup": "src/page_action/page_action.html"
   },
   "permissions": [
     "notifications",
+    "storage",
     "https://*/*"
   ],
   "content_scripts": [

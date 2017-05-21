@@ -15,7 +15,6 @@ form.addEventListener("submit", function(event){
 });
 
 function getFromZerawApi(elem) {
-  let result;
   let xmlhttp = new XMLHttpRequest();
 
   xmlhttp.onreadystatechange = function() {
