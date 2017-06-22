@@ -203,7 +203,7 @@ function btnEncrypt() {
         let str = textarea.value.substring(textarea.selectionStart, textarea.selectionEnd);
 
         encrypt(str, function () {
-            textarea.value = "[code]" + textarea.value.replace(str, this.toString()) + "[/code]";
+            textarea.value = textarea.value.replace(str, "[code]" + this.toString() + "[/code]");
         });
     };
 
