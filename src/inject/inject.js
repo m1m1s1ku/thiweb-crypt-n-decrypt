@@ -52,6 +52,10 @@ function getAllLinks() {
  */
 function getCount() {
     const req = new XMLHttpRequest();
+    
+    if(!document.getElementById('usernameExt'))
+        return; 
+
     let username = document.getElementById('usernameExt').lastChild.innerHTML; // Get username on page
 
     let res;
