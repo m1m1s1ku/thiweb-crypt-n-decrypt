@@ -21,7 +21,7 @@ function checkConnect() {
  * @param callback
  */
 function encrypt(str, callback) {
-    let xmlhttp = new XMLHttpRequest();
+    const xmlhttp = new XMLHttpRequest();
 
     xmlhttp.onreadystatechange = function () {
         if (xmlhttp.readyState == XMLHttpRequest.DONE) {
@@ -42,7 +42,7 @@ function encrypt(str, callback) {
  * Get every code on the page
  */
 function getAllLinks() {
-    let codes = document.getElementsByTagName('code'); // Get all codes elements
+    const codes = document.getElementsByTagName('code'); // Get all codes elements
 
     getFromZerawApi(codes); // Get current code from api
 }
@@ -56,14 +56,12 @@ function getCount() {
     if(!document.getElementById('usernameExt'))
         return; 
 
-    let username = document.getElementById('usernameExt').lastChild.innerHTML; // Get username on page
-
-    let res;
+    const username = document.getElementById('usernameExt').lastChild.innerHTML; // Get username on page
 
     req.onreadystatechange = function (event) {
         if (this.readyState === XMLHttpRequest.DONE) {
             if (this.status === 200) {
-                res = JSON.parse(this.responseText);
+                const res = JSON.parse(this.responseText);
                 // If user has more than 1 post -> Decrypt
                 if (res.message >= 1) {
                     getAllLinks(); // Get everything
@@ -93,7 +91,7 @@ function createNotification(title, icon, content, link) {
     }
 
     // Create notification
-    let notification = new Notification(title, {
+    const notification = new Notification(title, {
         icon: icon,
         body: content,
     });
@@ -119,10 +117,10 @@ function parseAndReplaceUrls(strParse) {
                 re.lastIndex++;
             }
 
-            m.forEach((match, groupIndex) => {
+            for(const match of m){
                 // Replace match with url to make it clickable
                 strParse = strParse.replace(match, "<a href=\"" + match + "\">" + match + "</a>");
-            });
+            }
         }
     }
     return strParse;
@@ -137,7 +135,7 @@ function getFromZerawApi(elems) {
 
     for (let i = 0; i < elems.length; i++) {
         if (elems[i].innerHTML.trim().startsWith("TWL")) {
-            finalReq += elems[i].innerHTML.trim() + ","; // add param to url
+            finalReq += elems[i].innerHTML.trim().replace(/\n/g,' ') + ","; // add param to url
         }
     }
     finalReq = finalReq.slice(0, -1);
@@ -147,11 +145,11 @@ function getFromZerawApi(elems) {
     req.onreadystatechange = function (event) {
         if (this.readyState === XMLHttpRequest.DONE) {
             if (this.status === 200) {
-                let res = JSON.parse(this.responseText);
-                let decodeArray = res.message.split(",");
-                let codedArray = res.coded.split(",");
+                const res = JSON.parse(this.responseText);
+                const decodeArray = res.message.split(",");
+                const codedArray = res.coded.split(",");
 
-                var countT = 0;
+                let countT = 0;
 
                 for (let v = 0; v < elems.length; v++) {
                     if (elems[v].innerHTML.trim() == codedArray[countT]) {
@@ -188,7 +186,6 @@ chrome.extension.sendMessage({}, function (response) {
             }
             clearInterval(readyStateCheckInterval);
         }
-        ;
     });
 });
 

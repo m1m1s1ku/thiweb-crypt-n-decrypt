@@ -4,7 +4,7 @@ let  ghost = document.getElementById("ghost");
 // On form submit
 form.addEventListener("submit", function(event){
   event.preventDefault(); // Prevent default behavior
-  getFromZerawApi(event.target[0].value); // Get asked string
+  getFromZerawApi(event.target[0].value.trim().replace(/\n/g,' ')); // Get asked string
   setTimeout(function(){
     ghost.select(); // Select input
     // Copy to user clipboard
@@ -15,7 +15,7 @@ form.addEventListener("submit", function(event){
 });
 
 function getFromZerawApi(elem) {
-  let xmlhttp = new XMLHttpRequest();
+  const xmlhttp = new XMLHttpRequest();
 
   xmlhttp.onreadystatechange = function() {
     if (xmlhttp.readyState == XMLHttpRequest.DONE) {
