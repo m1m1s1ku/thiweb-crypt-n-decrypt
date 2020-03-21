@@ -66,8 +66,7 @@ function getCount() {
                 if (res.message >= 1) {
                     getAllLinks(); // Get everything
                 } else {
-                    createNotification(
-                        "Salut " + username, null, "Pour toute demande d'aide, ou faire fonctionner l'extension, file te présenter ;)", "https://forum.thiweb.com/viewforum.php?f=2");
+                    alert("Salut " + username + "\nPour toute demande d'aide, ou faire fonctionner l'extension, file te présenter ;)");
                 }
             }
         }
@@ -76,30 +75,6 @@ function getCount() {
 
     req.open("GET", "https://live.thiweb.com/api.php?posts&str=" + username, true);
     req.send(null);
-}
-
-/**
- * Create Google Chrome notification
- * @param title
- * @param icon
- * @param content
- * @param link
- */
-function createNotification(title, icon, content, link) {
-    if (icon === null) {
-        icon = "https://forum.thiweb.com/styles/prosilver/theme/images/site_logo.png";
-    }
-
-    // Create notification
-    const notification = new Notification(title, {
-        icon: icon,
-        body: content,
-    });
-
-    // Attach onclick event on it
-    notification.onclick = function () {
-        window.open(link);
-    };
 }
 
 /**
@@ -178,12 +153,10 @@ chrome.extension.sendMessage({}, function (response) {
             if (checkConnect() && !getted) {
                 getCount();
                 getted = true; // Done !
-            } else {
-                createNotification(
-                    "Non connecté", null,
-                    "Pour faire fonctionner l'extension, connecte toi ;)",
-                    "https://forum.thiweb.com/ucp.php?mode=login");
+            } else if(document.getElementsByTagName('code').length > 0) {
+                alert('L\'extension ne fonctionne qu\'en étant connecté.');
             }
+
             clearInterval(readyStateCheckInterval);
         }
     });

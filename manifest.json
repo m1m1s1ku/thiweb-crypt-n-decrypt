@@ -22,7 +22,6 @@
     "default_popup": "src/page_action/page_action.html"
   },
   "permissions": [
-    "notifications",
     "storage",
     "https://forum.thiweb.com/*"
   ],
