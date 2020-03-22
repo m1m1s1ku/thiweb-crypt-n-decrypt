@@ -1,5 +1,5 @@
 // @ts-check
-const form = document.getElementById("cryptForm");
+const form = document.getElementById("main");
 /**
  * @type {HTMLInputElement}
  */
