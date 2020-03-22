@@ -16,9 +16,9 @@
     "default_popup": "src/page_action/page_action.html"
   },
   "permissions": [
-    "storage",
     "https://live.thiweb.com/*",
-    "https://forum.thiweb.com/*"
+    "https://forum.thiweb.com/*",
+    "storage"
   ],
   "applications": {
     "gecko": {
