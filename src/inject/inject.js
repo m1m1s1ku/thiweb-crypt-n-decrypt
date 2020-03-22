@@ -6,6 +6,8 @@
 class TWExtension {
     _addEncryptButton() {
         const buttonsContainer = document.getElementById("format-buttons");
+
+        if(!buttonsContainer){ return; }
     
         const add = document.createElement("button");
         add.className = "button button-secondary";
