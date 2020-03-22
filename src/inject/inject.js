@@ -51,9 +51,9 @@ class TWExtension {
         }
     
         const username = this._username();
-        const req = await fetch("https://live.thiweb.com/api.php?posts&str=" + username);
+        const req = await fetch(this._endpoint('posts', username));
         const res = await req.json();
-        
+
         if(res.message > 1){
             this._set(res.message);
 
@@ -69,7 +69,7 @@ class TWExtension {
      */
     async _encrypt(str) {
         try {
-            const req = await fetch("https://live.thiweb.com/api.php?code&str=" + encodeURIComponent(str));
+            const req = await fetch(this._endpoint('code', encodeURIComponent(str)));
             const encrypt = await req.json();
     
             return encrypt.message;
@@ -86,7 +86,7 @@ class TWExtension {
         }
 
         try {
-            const response = await fetch("https://live.thiweb.com/api.php?decodeMultiple&str=" + this._params()).then(res => res.json());
+            const response = await fetch(this._endpoint('decodeMultiple', this._params())).then(res => res.json());
             const decodeArray = response.message.split(",");
             const codedArray = response.coded.split(",");
     
@@ -101,6 +101,19 @@ class TWExtension {
         } catch (err){
             console.error("Error while decoding", err);
         }
+    }
+
+    /**
+     * @param {string} type
+     * @param {string} body
+     * @returns {string}
+     */
+    _endpoint(type, body){
+        return this._apiURL.concat(type).concat('&str=').concat(body);
+    }
+
+    get _apiURL(){
+        return "https://live.thiweb.com/api.php?";
     }
 
     /**
