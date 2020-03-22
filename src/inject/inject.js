@@ -4,9 +4,6 @@
 // @ts-check
 
 class TWExtension {
-    /**
-     * Add Encrypt button to forum
-     */
     addEncryptButton() {
         const buttonsContainer = document.getElementById("format-buttons");
     
@@ -55,7 +52,7 @@ class TWExtension {
         if(this.codes.length === 0){
             return;
         }
-        
+
         try {
             const response = await fetch("https://live.thiweb.com/api.php?decodeMultiple&str=" + this._params()).then(res => res.json());
             const decodeArray = response.message.split(",");
@@ -142,6 +139,9 @@ class TWExtension {
         return str.trim().replace(/\n/g,' ');
     }
 
+    /**
+     * @returns {string}
+     */
     _params(){
         let params = "";
 
@@ -165,7 +165,6 @@ class TWExtension {
             utils.addEncryptButton();
         }
     } else if(utils.codes.length > 0) {
-        // @ts-ignore
         alert("Tu dois être connecté et avoir au moins un message pour utiliser l'extension");
     }
 })();
