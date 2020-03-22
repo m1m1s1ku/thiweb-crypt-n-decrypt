@@ -87,15 +87,19 @@ class TWExtension {
 
         try {
             const response = await fetch(this._endpoint('decodeMultiple', this._params())).then(res => res.json());
-            const decodeArray = response.message.split(",");
-            const codedArray = response.coded.split(",");
+            if(!response.message || !response.coded){
+                return;
+            }
+
+            const decoded = response.message.split(",");
+            const coded = response.coded.split(",");
     
-            let countT = 0;
+            let idx = 0;
             for(const code of this._codes){
-                if (this._clean(code.innerHTML) == codedArray[countT]) {
-                    code.innerHTML = this._activateLinks(decodeArray[countT]);
+                if (this._clean(code.innerHTML) == coded[idx]) {
+                    code.innerHTML = this._activateLinks(decoded[idx]);
                     code.animate([{ opacity: 0 },{ opacity: 1 }], { duration: 300 });
-                    countT++;
+                    idx++;
                 }
             }
         } catch (err){
