@@ -1,32 +1,40 @@
-let form = document.getElementById("cryptForm");
-let  ghost = document.getElementById("ghost");
+// @ts-check
+const form = document.getElementById("cryptForm");
+/**
+ * @type {HTMLInputElement}
+ */
+// @ts-ignore
+const ghost = document.getElementById("ghost");
 
-// On form submit
-form.addEventListener("submit", function(event){
-  event.preventDefault(); // Prevent default behavior
-  getFromZerawApi(event.target[0].value.trim().replace(/\n/g,' ')); // Get asked string
-  setTimeout(function(){
-    ghost.select(); // Select input
-    // Copy to user clipboard
-    if(document.execCommand('copy')){
-      document.getElementById('notifCopy').style.display = "block";
-    }
-  }, 200);
-});
+/**
+ *
+ * @param {Event} event
+ */
+async function _onSubmit(event){
+  event.preventDefault();
+  const clear = event.target[0].value.trim().replace(/\n/g,' ');
+  const encrypted = await _encrypt(clear);
+  ghost.value = encrypted;
 
-function getFromZerawApi(elem) {
-  const xmlhttp = new XMLHttpRequest();
+  ghost.select(); // Select input
 
-  xmlhttp.onreadystatechange = function() {
-    if (xmlhttp.readyState == XMLHttpRequest.DONE) {
-      if (xmlhttp.status == 200) {
-        let res = JSON.parse(xmlhttp.responseText);
-        ghost.value = res.message; // Write in input response
-      } else {
-        console.error("Erreur pendant le cryptage");
-      }
-    }
+  // Copy to user clipboard
+  if(document.execCommand('copy')){
+    document.getElementById('notifCopy').style.display = "block";
   }
-  xmlhttp.open("GET", "https://live.thiweb.com/api.php?code&str=" + encodeURIComponent(elem), true);
-  xmlhttp.send();
+}
+
+form.addEventListener("submit", _onSubmit);
+
+/**
+ * @param {string} str
+ * @returns {Promise<string>} encrypted
+ */
+async function _encrypt(str) {
+  try {
+    const res = await fetch("https://live.thiweb.com/api.php?code&str=" + encodeURIComponent(str)).then(res => res.json());
+    return res.message;
+  } catch (err){
+    console.error("Error while encrypting string", str);
+  }
 }
