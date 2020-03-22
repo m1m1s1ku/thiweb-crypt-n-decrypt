@@ -93,7 +93,7 @@ class TWExtension {
             let countT = 0;
         
             for (let v = 0; v < this._codes.length; v++) {
-                if (this._codes[v].innerHTML.trim() == codedArray[countT]) {
+                if (this._clean(this._codes[v].innerHTML) == codedArray[countT]) {
                     this._codes[v].innerHTML = this._activateLinks(decodeArray[countT]); // Sync index with countDiff ;)
                     this._codes[v].animate([
                         { opacity: 0 }, 
