@@ -91,16 +91,10 @@ class TWExtension {
             const codedArray = response.coded.split(",");
     
             let countT = 0;
-        
-            for (let v = 0; v < this._codes.length; v++) {
-                if (this._clean(this._codes[v].innerHTML) == codedArray[countT]) {
-                    this._codes[v].innerHTML = this._activateLinks(decodeArray[countT]); // Sync index with countDiff ;)
-                    this._codes[v].animate([
-                        { opacity: 0 }, 
-                        { opacity: 1 }
-                      ], { 
-                        duration: 300
-                      })
+            for(const code of this._codes){
+                if (this._clean(code.innerHTML) == codedArray[countT]) {
+                    code.innerHTML = this._activateLinks(decodeArray[countT]);
+                    code.animate([{ opacity: 0 },{ opacity: 1 }], { duration: 300 });
                     countT++;
                 }
             }
@@ -204,10 +198,10 @@ class TWExtension {
     _params(){
         const params = [];
 
-        for (let i = 0; i < this._codes.length; i++) {
-            const cleanup = this._clean(this._codes[i].innerHTML);
+        for(const code of this._codes){
+            const cleanup = this._clean(code.innerHTML);
             if (cleanup.startsWith("TWL")) {
-                params.push(this._clean(this._codes[i].innerHTML));
+                params.push(cleanup);
             }
         }
 
