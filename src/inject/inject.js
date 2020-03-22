@@ -4,7 +4,7 @@
 // @ts-check
 
 class TWExtension {
-    addEncryptButton() {
+    _addEncryptButton() {
         const buttonsContainer = document.getElementById("format-buttons");
     
         const add = document.createElement("button");
@@ -15,7 +15,7 @@ class TWExtension {
         buttonsContainer.appendChild(add);
     }
 
-    async check() {    
+    async _check() {    
         if(!document.getElementById('usernameExt')){
             return false; 
         }
@@ -35,7 +35,7 @@ class TWExtension {
      * @param {string} str
      * @returns {Promise<string>}
      */
-    async encrypt(str) {
+    async _encrypt(str) {
         try {
             const req = await fetch("https://live.thiweb.com/api.php?code&str=" + encodeURIComponent(str));
             const encrypt = await req.json();
@@ -48,8 +48,8 @@ class TWExtension {
         return null;
     }
 
-    async decode(){
-        if(this.codes.length === 0){
+    async _decode(){
+        if(this._codes.length === 0){
             return;
         }
 
@@ -60,9 +60,9 @@ class TWExtension {
     
             let countT = 0;
         
-            for (let v = 0; v < this.codes.length; v++) {
-                if (this.codes[v].innerHTML.trim() == codedArray[countT]) {
-                    this.codes[v].innerHTML = this._activateLinks(decodeArray[countT]); // Sync index with countDiff ;)
+            for (let v = 0; v < this._codes.length; v++) {
+                if (this._codes[v].innerHTML.trim() == codedArray[countT]) {
+                    this._codes[v].innerHTML = this._activateLinks(decodeArray[countT]); // Sync index with countDiff ;)
                     countT++;
                 }
             }
@@ -75,7 +75,7 @@ class TWExtension {
      * @readonly
      * @returns {HTMLCollectionOf<HTMLElement>}
      */
-    get codes(){
+    get _codes(){
         return document.getElementsByTagName('code');
     }
 
@@ -90,7 +90,7 @@ class TWExtension {
         const textarea = document.querySelector("textarea#message");
         const str = textarea.value.substring(textarea.selectionStart, textarea.selectionEnd);
     
-        const encrypted = await this.encrypt(str);
+        const encrypted = await this._encrypt(str);
         textarea.value = textarea.value.replace(str, `[code]${encrypted}[/code]`);
     }
 
@@ -145,30 +145,34 @@ class TWExtension {
     _params(){
         let params = "";
 
-        for (let i = 0; i < this.codes.length; i++) {
-            if (this.codes[i].innerHTML.trim().startsWith("TWL")) {
-                params += this._clean(this.codes[i].innerHTML) + ",";
+        for (let i = 0; i < this._codes.length; i++) {
+            if (this._codes[i].innerHTML.trim().startsWith("TWL")) {
+                params += this._clean(this._codes[i].innerHTML) + ",";
             }
         }
 
         return params.slice(0, -1);
     }
+
+    async run(){
+        if(this._codes.length === 0){
+            return;
+        }
+
+        const canUse = await this._check();
+        if(canUse){
+            await this._decode();
+    
+            if (document.getElementById('message')) {
+                this._addEncryptButton();
+            }
+        } else {
+            alert("Tu dois être connecté et avoir au moins un message pour utiliser l'extension");
+        }
+    }
 }
 
 (async function(){
     const utils = new TWExtension();
-    if(utils.codes.length === 0){
-        return;
-    }
-
-    const canUse = await utils.check();
-    if(canUse){
-        await utils.decode();
-
-        if (document.getElementById('message')) {
-            utils.addEncryptButton();
-        }
-    } else {
-        alert("Tu dois être connecté et avoir au moins un message pour utiliser l'extension");
-    }
+    await utils.run();
 })();
