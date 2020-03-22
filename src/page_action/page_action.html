@@ -11,60 +11,69 @@
 			color: #f0f0f0;
 			font-family: "Lucida Grande", "Trebuchet MS", Verdana, Helvetica, Arial, sans-serif;
 		}
-		h4 {
-			font-weight: 300;
-		}
+
 		button {
 			border: 1px solid #282828;
-	    background: #333;
-	    border-radius: 3px;
-	    color: #939393;
-	    transition: all .3s;
-	    margin: 5px 15px;
+			background: #333;
+			border-radius: 2px;
+			color: #939393;
+			margin: 5px 15px;
+			transition: background-color, color .3s;
 		}
+
 		button:hover {
 			background-color: #434343;
 			color: #008cc3;
 		}
+
 		form {
-			text-align: center;
+			display: flex;
+			justify-content: center;
+			flex-direction: column;
+			align-items: center;
+			padding: 15px;
 		}
+
 		input {
 			background-color: #333;
-	    border: 1px solid #333;
+			border: 1px solid #333;
 			color: #939393;
 			outline: none;
-	    padding: 2px;
-	    border-radius: 2px;
+			padding: 2px;
+			border-radius: 2px;
 		}
+
 		a {
 			color: #1a7ea6;
 			text-decoration: none;
 		}
-		#popup {
-			padding: 10px;
-		  width: 130px;
+
+		.popup-content {
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			flex-direction: column;
+			width: 110px;
 		}
-		#logo {
-			display: block;
+
+		.logo {
 			width: 50px;
-			margin: 0 auto;
 		}
-		#notifCopy {
+		
+		.message {
 			display: none;
 		}
 	</style>
 </head>
 <body>
-	<div id="popup">
-		<img id="logo" src="https://www.thiweb.com/img/logo.svg" alt="Logo TW">
-		<h4>Cryptage</h4>
+	<div id="popup" class="popup-content">
+		<img class="logo" src="https://www.thiweb.com/img/logo.svg" alt="Logo TW">
 		<form id="cryptForm">
-			<input type="text" id="toCrypt" name="toCrypt" />
+			<input autocomplete="off" type="text" id="toCrypt" name="toCrypt" placeholder="Texte" />
 			<button type="submit" id="btnCrypt">Crypter</button>
+			<input id="ghost" placeholder="TWL2.3" readonly autocomplete="off" />
 		</form>
-		<input id="ghost" />
-		<h4 id="notifCopy">Copié avec succès !</h4>
+		<h4 id="notifCopy" class="message">Copié !</h4>
 	</div>
 	<script src="action.js"></script>
 </body>
