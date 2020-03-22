@@ -15,16 +15,48 @@ class TWExtension {
         buttonsContainer.appendChild(add);
     }
 
+    /**
+     * @returns {Promise<number>}
+     */
+    async _get(){
+        return new Promise((resolve) => {
+            // @ts-ignore
+            chrome.storage.sync.get(['count'], function(items) {
+                if(items && items.count){
+                    resolve(parseInt(items.count, 10));
+                } else {
+                    resolve(null);
+                }
+            });
+        })
+    }
+
+    /**
+     * @param {number} count
+     */
+    _set(count){
+        // @ts-ignore
+        chrome.storage.sync.set({count});
+    }
+
     async _check() {    
         if(!document.getElementById('usernameExt')){
             return false; 
         }
+
+        // @ts-ignore
+        const count = await this._get();
+        if(count !== null && count > 1){
+            return true;
+        }
     
         const username = this._username();
-    
         const req = await fetch("https://live.thiweb.com/api.php?posts&str=" + username);
         const res = await req.json();
-        if(res.message >= 1){
+        
+        if(res.message > 1){
+            this._set(res.message);
+
             return true;
         } else {
             return false;
