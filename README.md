@@ -1,5 +1,5 @@
-# ThiWeb Chrome
-Decrypt automatically links on the forum ! | Chrome extension for Forum.ThiWeb.com
+# ThiWeb Extension
+Decrypt automatically links on the forum ! | Web extension for Forum.ThiWeb.com
 
 ## Install : [Chrome Web Store](https://chrome.google.com/webstore/detail/thiweb-auto-decrypt/noadaplbhpacekfmbhojlbldckniffce?hl=fr)
 
