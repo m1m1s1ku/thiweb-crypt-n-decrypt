@@ -1,5 +1,8 @@
 {
     "connectAlert": {
         "message": "You should be connected and have at least 1 message to use this extension."
+    },
+    "cryptSelection": {
+        "message": "Encrypt selection"
     }
 }

@@ -11,7 +11,8 @@ class TWExtension {
     
         const add = document.createElement("button");
         add.className = "button button-secondary";
-        add.innerHTML = "Crypter la sélection";
+        // @ts-ignore
+        add.innerHTML = chrome.i18n.getMessage("cryptSelection");
         add.onclick = this._onEncryptButtonClick.bind(this);
     
         buttonsContainer.appendChild(add);
@@ -73,10 +74,14 @@ class TWExtension {
         try {
             const req = await fetch(this._endpoint('code', encodeURIComponent(str)));
             const encrypt = await req.json();
+
+            if(!encrypt || !encrypt.message){
+                return;
+            }
     
             return encrypt.message;
         } catch (err) {
-            console.error("Erreur pendant le cryptage", err);
+            console.error("Error while encrypt", err);
         }
     
         return null;
@@ -115,7 +120,7 @@ class TWExtension {
      * @returns {string}
      */
     _endpoint(type, body){
-        return this._apiURL.concat(type).concat('&str=').concat(body);
+        return `${this._apiURL}${type}&str=${body}`;
     }
 
     get _apiURL(){
@@ -142,7 +147,9 @@ class TWExtension {
         const str = textarea.value.substring(textarea.selectionStart, textarea.selectionEnd);
     
         const encrypted = await this._encrypt(str);
-        textarea.value = textarea.value.replace(str, `[code]${encrypted}[/code]`);
+        if(encrypted){
+            textarea.value = textarea.value.replace(str, `[code]${encrypted}[/code]`);
+        }
     }
 
     /**
@@ -160,7 +167,7 @@ class TWExtension {
         }
     }
 
-    /**     *
+    /**
      * @param {string} str
      * @returns {string}
      */
