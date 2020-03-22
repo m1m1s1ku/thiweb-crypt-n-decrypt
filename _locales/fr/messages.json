@@ -1,1 +1,5 @@
-{}
+{
+    "connectAlert": {
+        "message": "Vous devez être connecté et avoir au moins un message pour utiliser cette extension."
+    }
+}

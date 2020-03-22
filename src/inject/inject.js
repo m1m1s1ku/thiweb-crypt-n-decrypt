@@ -225,7 +225,8 @@ class TWExtension {
                 this._addEncryptButton();
             }
         } else {
-            alert("Tu dois être connecté et avoir au moins un message pour utiliser l'extension");
+            // @ts-ignore
+            alert(chrome.i18n.getMessage("connectAlert"));
         }
     }
 }
