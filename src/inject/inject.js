@@ -157,6 +157,10 @@ class TWExtension {
 
 (async function(){
     const utils = new TWExtension();
+    if(utils.codes.length === 0){
+        return;
+    }
+
     const canUse = await utils.check();
     if(canUse){
         await utils.decode();
@@ -164,7 +168,7 @@ class TWExtension {
         if (document.getElementById('message')) {
             utils.addEncryptButton();
         }
-    } else if(utils.codes.length > 0) {
+    } else {
         alert("Tu dois être connecté et avoir au moins un message pour utiliser l'extension");
     }
 })();
