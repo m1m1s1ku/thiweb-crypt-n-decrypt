@@ -205,7 +205,7 @@ class TWExtension {
         let params = "";
 
         for (let i = 0; i < this._codes.length; i++) {
-            if (this._codes[i].innerHTML.trim().startsWith("TWL")) {
+            if (this._clean(this._codes[i].innerHTML).startsWith("TWL")) {
                 params += this._clean(this._codes[i].innerHTML) + ",";
             }
         }
