@@ -5,6 +5,7 @@ const form = document.getElementById("cryptForm");
  */
 // @ts-ignore
 const ghost = document.getElementById("ghost");
+const message = document.getElementById('notifCopy');
 
 /**
  *
@@ -20,7 +21,10 @@ async function _onSubmit(event){
 
   // Copy to user clipboard
   if(document.execCommand('copy')){
-    document.getElementById('notifCopy').style.display = "block";
+    message.style.display = "block";
+    setTimeout(() => {
+      message.style.display = "none";
+    }, 1000);
   }
 }
 
