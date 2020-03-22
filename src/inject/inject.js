@@ -202,15 +202,16 @@ class TWExtension {
      * @returns {string}
      */
     _params(){
-        let params = "";
+        const params = [];
 
         for (let i = 0; i < this._codes.length; i++) {
-            if (this._clean(this._codes[i].innerHTML).startsWith("TWL")) {
-                params += this._clean(this._codes[i].innerHTML) + ",";
+            const cleanup = this._clean(this._codes[i].innerHTML);
+            if (cleanup.startsWith("TWL")) {
+                params.push(this._clean(this._codes[i].innerHTML));
             }
         }
 
-        return params.slice(0, -1);
+        return params.join(',');
     }
 
     async run(){
