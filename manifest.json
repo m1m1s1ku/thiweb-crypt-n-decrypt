@@ -17,8 +17,14 @@
   },
   "permissions": [
     "storage",
+    "https://live.thiweb.com/*",
     "https://forum.thiweb.com/*"
   ],
+  "applications": {
+    "gecko": {
+        "id": "{0b6555af-b17c-44b9-8e95-ab1e554dca4f}"
+    }
+  },
   "content_scripts": [
     {
       "matches": [
