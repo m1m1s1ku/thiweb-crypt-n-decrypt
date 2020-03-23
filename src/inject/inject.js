@@ -4,7 +4,9 @@
 // @ts-check
 
 class TWExtension {
-    _separator = "{{|}}";
+    constructor(){
+        this._separator = '{{|}}';
+    }
 
     _addEncryptButton() {
         const buttonsContainer = document.getElementById("format-buttons");
