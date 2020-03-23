@@ -19,6 +19,23 @@ class TWExtension {
     }
 
     /**
+     * @param {Event} event
+     */
+    async _onEncryptButtonClick(event){
+        event.preventDefault();
+        /**
+         * @type {HTMLInputElement}
+         */
+        const textarea = document.querySelector("textarea#message");
+        const str = textarea.value.substring(textarea.selectionStart, textarea.selectionEnd);
+    
+        const encrypted = await this._encrypt(str);
+        if(encrypted){
+            textarea.value = textarea.value.replace(str, `[code]${encrypted}[/code]`);
+        }
+    }
+
+    /**
      * @returns {Promise<number>}
      */
     async _get(){
@@ -34,6 +51,8 @@ class TWExtension {
         })
     }
 
+    // Storage sync part
+    // Allows to get / set message count thus, avoid one api call (except first time)
     /**
      * @param {number} count
      */
@@ -42,6 +61,9 @@ class TWExtension {
         chrome.storage.sync.set({count});
     }
 
+    /**
+     * @returns {Promise<boolean>}
+     */
     async _check() {    
         if(!document.getElementById('usernameExt')){
             return false; 
@@ -54,6 +76,10 @@ class TWExtension {
         }
     
         const username = this._username();
+        if(!username){
+            return false;
+        }
+
         const req = await fetch(this._endpoint('posts', username));
         const res = await req.json();
 
@@ -68,7 +94,7 @@ class TWExtension {
 
     /**
      * @param {string} str
-     * @returns {Promise<string>}
+     * @returns {Promise<null|string>}
      */
     async _encrypt(str) {
         try {
@@ -87,6 +113,9 @@ class TWExtension {
         return null;
     }
 
+    /**
+     * @returns {Promise<void>}
+     */
     async _decode(){
         if(this._codes.length === 0){
             return;
@@ -136,24 +165,7 @@ class TWExtension {
     }
 
     /**
-     * @param {Event} event
-     */
-    async _onEncryptButtonClick(event){
-        event.preventDefault();
-        /**
-         * @type {HTMLInputElement}
-         */
-        const textarea = document.querySelector("textarea#message");
-        const str = textarea.value.substring(textarea.selectionStart, textarea.selectionEnd);
-    
-        const encrypted = await this._encrypt(str);
-        if(encrypted){
-            textarea.value = textarea.value.replace(str, `[code]${encrypted}[/code]`);
-        }
-    }
-
-    /**
-     * @returns {string} username of the user
+     * @returns {string|null} username of the user
      */
     _username(){
         /**
@@ -221,6 +233,9 @@ class TWExtension {
         return params.join(',');
     }
 
+    /**
+     * @returns {Promise<void>}
+     */
     async run(){
         if(this._codes.length === 0){
             return;
