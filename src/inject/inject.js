@@ -12,7 +12,7 @@ class TWExtension {
         const add = document.createElement("button");
         add.className = "button button-secondary";
         // @ts-ignore
-        add.innerHTML = chrome.i18n.getMessage("cryptSelection");
+        add.innerText = chrome.i18n.getMessage("cryptSelection");
         add.onclick = this._onEncryptButtonClick.bind(this);
     
         buttonsContainer.appendChild(add);
@@ -60,7 +60,7 @@ class TWExtension {
             padding: 0;
             margin: 0;
         }
-        
+
         #should-be-logged-dialog img {
             width: 50px;
             padding: 5px;
