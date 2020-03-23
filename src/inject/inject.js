@@ -18,6 +18,72 @@ class TWExtension {
         buttonsContainer.appendChild(add);
     }
 
+    _showLoginAlert(){
+        const style = document.createElement('style');
+        const css = document.createTextNode(`
+        #should-be-logged-dialog {
+            background: #2b2b2b;
+            color: #212121;
+
+            font-weight: 400;
+            font-size: 13px;
+
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 270px;
+            margin: auto auto;
+            border-radius: 8px;
+            overflow: visible;
+            max-width: 95%;
+            cursor: pointer;
+
+            display: flex;
+            flex-direction: row;
+            padding: 1em;
+
+            box-shadow: 0 3px 3px -2px rgba(0,0,0,.2), 0 3px 4px 0 rgba(0,0,0,.14), 0 1px 8px 0 rgba(0,0,0,.12);
+        }
+
+        #should-be-logged-dialog h3 {
+            text-transform: none;
+            font-family: -apple-system, 'Helvetica Neue', Helvetica, Arial, 'Lucida Grande', sans-serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            font-size: 17px;
+            font-size: 17px;
+            font-weight: 500;
+            padding: 0px 8px 0px 8px;
+            text-align: center;
+            color: #fff;
+        }
+        #should-be-logged-dialog img {
+            width: 50px;
+        }
+        `);
+        style.appendChild(css);
+
+        const dialog = document.createElement('div');
+        dialog.id = "should-be-logged-dialog";
+
+        const logo = document.createElement('img');
+        logo.src = 'https://www.thiweb.com/img/logo.svg';
+        logo.alt = 'Thiweb logo';
+
+        const title = document.createElement('h3');
+        // @ts-ignore
+        title.innerText = chrome.i18n.getMessage("connectAlert");
+        dialog.appendChild(logo);
+        dialog.appendChild(title);
+        dialog.appendChild(style);
+        document.body.appendChild(dialog);
+
+        dialog.onclick = function(){
+            dialog.parentElement.removeChild(dialog);
+        };
+    }
+
     /**
      * @param {Event} event
      */
@@ -246,8 +312,7 @@ class TWExtension {
                 this._addEncryptButton();
             }
         } else {
-            // @ts-ignore
-            alert(chrome.i18n.getMessage("connectAlert"));
+            this._showLoginAlert();
         }
     }
 }
