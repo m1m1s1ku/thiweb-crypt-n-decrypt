@@ -22,6 +22,7 @@ class TWExtension {
         const style = document.createElement('style');
         const css = document.createTextNode(`
         #should-be-logged-dialog {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
             background: #2b2b2b;
             color: #212121;
 
@@ -41,6 +42,7 @@ class TWExtension {
 
             display: flex;
             flex-direction: row;
+            justify-content: space-between;
             padding: 1em;
 
             box-shadow: 0 3px 3px -2px rgba(0,0,0,.2), 0 3px 4px 0 rgba(0,0,0,.14), 0 1px 8px 0 rgba(0,0,0,.12);
@@ -48,7 +50,6 @@ class TWExtension {
 
         #should-be-logged-dialog h3 {
             text-transform: none;
-            font-family: -apple-system, 'Helvetica Neue', Helvetica, Arial, 'Lucida Grande', sans-serif;
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
             font-size: 17px;
@@ -56,10 +57,13 @@ class TWExtension {
             font-weight: 500;
             text-align: center;
             color: #fff;
+            padding: 0;
             margin: 0;
         }
+        
         #should-be-logged-dialog img {
             width: 50px;
+            padding: 5px;
         }
         `);
         style.appendChild(css);
