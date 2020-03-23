@@ -54,9 +54,9 @@ class TWExtension {
             font-size: 17px;
             font-size: 17px;
             font-weight: 500;
-            padding: 0px 8px 0px 8px;
             text-align: center;
             color: #fff;
+            margin: 0;
         }
         #should-be-logged-dialog img {
             width: 50px;
