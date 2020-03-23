@@ -4,6 +4,8 @@
 // @ts-check
 
 class TWExtension {
+    _separator = "{{|}}";
+
     _addEncryptButton() {
         const buttonsContainer = document.getElementById("format-buttons");
 
@@ -197,8 +199,8 @@ class TWExtension {
                 return;
             }
 
-            const decoded = response.message.split(",");
-            const coded = response.coded.split(",");
+            const decoded = response.message.split(this._separator);
+            const coded = response.coded.split(this._separator);
     
             let idx = 0;
             for(const code of this._codes){
@@ -297,7 +299,7 @@ class TWExtension {
             }
         }
 
-        return params.join(',');
+        return params.join(this._separator);
     }
 
     /**
