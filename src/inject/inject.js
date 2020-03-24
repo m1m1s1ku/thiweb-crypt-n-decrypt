@@ -209,6 +209,7 @@ class TWExtension {
                 if (this._clean(code.innerHTML) == coded[idx]) {
                     const newCode = this._activateLinks(decoded[idx]);
                     code.parentElement.replaceChild(newCode, code);
+                    newCode.setAttribute('data-origin-twl', coded[idx]);
                     newCode.animate([{ opacity: 0 },{ opacity: 1 }], { duration: 300 });
                     idx++;
                 }
@@ -278,14 +279,17 @@ class TWExtension {
 
         const parser = new DOMParser();
         const parsedBody = parser.parseFromString(str, 'text/html').body;
-        const tags = parsedBody.children;
 
-        for(const tag of tags){
-            parsedBody.removeChild(tag);
-            codeElement.insertBefore(tag, codeElement.firstChild);
+        for(let i = 0; i <= parsedBody.childNodes.length; i++){
+            const tag = parsedBody.childNodes[i];
+            if(!tag) continue;
+
+            if(tag instanceof Text){
+                codeElement.append(document.createTextNode(tag.textContent));
+            } else if(tag instanceof HTMLElement){
+                codeElement.appendChild(tag.cloneNode(true));
+            }
         }
-
-        codeElement.appendChild(document.createTextNode(parsedBody.innerText));
         
         return codeElement;
     }
