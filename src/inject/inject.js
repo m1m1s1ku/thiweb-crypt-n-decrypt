@@ -277,15 +277,15 @@ class TWExtension {
         }
 
         const parser = new DOMParser();
-        const tags = parser.parseFromString(str, 'text/html').body.children;
-
-        if(tags.length === 0){
-            codeElement.appendChild(document.createTextNode(str));
-        }
+        const parsedBody = parser.parseFromString(str, 'text/html').body;
+        const tags = parsedBody.children;
 
         for(const tag of tags){
+            parsedBody.removeChild(tag);
             codeElement.insertBefore(tag, codeElement.firstChild);
         }
+
+        codeElement.appendChild(document.createTextNode(parsedBody.innerText));
         
         return codeElement;
     }
