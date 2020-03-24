@@ -276,7 +276,16 @@ class TWExtension {
             }
         }
 
-        codeElement.insertAdjacentHTML('beforeend', str);
+        const parser = new DOMParser();
+        const tags = parser.parseFromString(str, 'text/html').body.children;
+
+        if(tags.length === 0){
+            codeElement.appendChild(document.createTextNode(str));
+        }
+
+        for(const tag of tags){
+            codeElement.insertBefore(tag, codeElement.firstChild);
+        }
         
         return codeElement;
     }
