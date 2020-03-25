@@ -232,6 +232,7 @@ class TWExtension {
                     const onShowCode = (event) => {
                         event.preventDefault();
                         newCode.innerText = code;
+                        this._blur(newCode);
                         // @ts-ignore
                         showOriginal.innerText = chrome.i18n.getMessage("showDecrypted");
                         showOriginal.onclick = onDecryptCode;
@@ -260,7 +261,7 @@ class TWExtension {
      * @param {HTMLElement} elem
      */
     _blur(elem){
-        elem.animate([{ filter: 'blur(5px)' }, { filter: 'blur(0)' }], { duration: 300 });
+        elem.animate([{ filter: 'blur(5px)'}, { filter: 'none' }], { duration: 300 });
     }
 
     /**
