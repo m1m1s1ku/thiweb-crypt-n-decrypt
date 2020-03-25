@@ -222,6 +222,7 @@ class TWExtension {
                         const oldCode = newCode;
                         newCode = this._activateLinks(clear);
                         parent.replaceChild(newCode, oldCode);
+                        this._blur(newCode);
 
                         // @ts-ignore
                         showOriginal.innerText = chrome.i18n.getMessage("showOriginal");
@@ -246,13 +247,20 @@ class TWExtension {
                     parentCodeBoxP.appendChild(showOriginal);
 
                     newCode.setAttribute('data-origin-twl', coded[idx]);
-                    newCode.animate([{ opacity: 0 },{ opacity: 1 }], { duration: 300 });
+                    this._blur(newCode);
                     idx++;
                 }
             }
         } catch (err){
             console.error("Error while decoding", err);
         }
+    }
+
+    /**
+     * @param {HTMLElement} elem
+     */
+    _blur(elem){
+        elem.animate([{ filter: 'blur(5px)' }, { filter: 'blur(0)' }], { duration: 300 });
     }
 
     /**
@@ -335,7 +343,7 @@ class TWExtension {
 
             if(tag instanceof Text){
                 element.append(document.createTextNode(tag.textContent));
-            } else if(tag instanceof HTMLElement){
+            } else if(tag instanceof HTMLAnchorElement){
                 element.appendChild(tag.cloneNode(true));
             }
         }
