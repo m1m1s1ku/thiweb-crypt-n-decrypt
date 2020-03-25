@@ -4,5 +4,11 @@
     },
     "cryptSelection": {
         "message": "Crypter la sélection"
+    },
+    "showOriginal": {
+        "message": "Code original"
+    },
+    "showDecrypted": {
+        "message": "Code décrypté"
     }
 }

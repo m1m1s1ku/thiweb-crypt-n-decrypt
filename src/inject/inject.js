@@ -205,10 +205,46 @@ class TWExtension {
             const coded = response.coded.split(this._separator);
     
             let idx = 0;
-            for(const code of this._codes){
-                if (this._clean(code.innerHTML) == coded[idx]) {
-                    const newCode = this._activateLinks(decoded[idx]);
-                    code.parentElement.replaceChild(newCode, code);
+            for(const codeElement of this._codes){
+                if (this._clean(codeElement.innerHTML) == coded[idx]) {
+                    let newCode = this._activateLinks(decoded[idx]);
+                    const showOriginal = document.createElement('a');
+                    showOriginal.style.marginLeft = '5px';
+                    showOriginal.href = "#";
+                    showOriginal.style.cursor = 'pointer';
+
+                    const code = coded[idx];
+                    const clear = decoded[idx];
+
+                    const onDecryptCode = (event) => {
+                        event.preventDefault();
+                        const parent = newCode.parentElement;
+                        const oldCode = newCode;
+                        newCode = this._activateLinks(clear);
+                        parent.replaceChild(newCode, oldCode);
+
+                        // @ts-ignore
+                        showOriginal.innerText = chrome.i18n.getMessage("showOriginal");
+                        showOriginal.onclick = onShowCode;
+                    };
+
+                    const onShowCode = (event) => {
+                        event.preventDefault();
+                        newCode.innerText = code;
+                        // @ts-ignore
+                        showOriginal.innerText = chrome.i18n.getMessage("showDecrypted");
+                        showOriginal.onclick = onDecryptCode;
+                    };
+
+                    showOriginal.onclick = onShowCode;
+
+                    // @ts-ignore
+                    showOriginal.innerText = chrome.i18n.getMessage("showOriginal");
+                    codeElement.parentElement.replaceChild(newCode, codeElement);
+
+                    const parentCodeBoxP = newCode.parentElement.parentElement.querySelector('p');
+                    parentCodeBoxP.appendChild(showOriginal);
+
                     newCode.setAttribute('data-origin-twl', coded[idx]);
                     newCode.animate([{ opacity: 0 },{ opacity: 1 }], { duration: 300 });
                     idx++;
@@ -277,21 +313,34 @@ class TWExtension {
             }
         }
 
+        this._insertUnsafeHTML(str, codeElement);
+        
+        return codeElement;
+    }
+    
+    /**
+     * @param {string} str
+     * @param {HTMLElement} element
+     */
+    _insertUnsafeHTML(str, element, clear = false){
+        if(clear){
+            element.innerHTML = '';
+        }
+
         const parser = new DOMParser();
         const parsedBody = parser.parseFromString(str, 'text/html').body;
 
-        for(let i = 0; i <= parsedBody.childNodes.length; i++){
+        for(let i = 0; i < parsedBody.childNodes.length; i++){
             const tag = parsedBody.childNodes[i];
-            if(!tag) continue;
 
             if(tag instanceof Text){
-                codeElement.append(document.createTextNode(tag.textContent));
+                element.append(document.createTextNode(tag.textContent));
             } else if(tag instanceof HTMLElement){
-                codeElement.appendChild(tag.cloneNode(true));
+                element.appendChild(tag.cloneNode(true));
             }
         }
-        
-        return codeElement;
+
+        return element;
     }
 
     /**
