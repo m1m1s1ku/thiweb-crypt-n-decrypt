@@ -17,8 +17,7 @@
   },
   "permissions": [
     "https://live.thiweb.com/*",
-    "https://forum.thiweb.com/*",
-    "storage"
+    "https://forum.thiweb.com/*"
   ],
   "applications": {
     "gecko": {
