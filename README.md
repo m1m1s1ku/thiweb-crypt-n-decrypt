@@ -13,16 +13,24 @@ Install dependencies :
 $ npm install
 ```
 
-Build package :
+Build :
 ```
 $ npm run build
+```
+
+Package for stores :
+```
+$ npm run prepare
 ```
 
 ### Manual :
 
 Avoid this method, except for development ( Store extensions stay updated, not unpacked ;) )
 
+- Clone & build
 - Go to chrome settings
 - Activate developer mode
 - "Extensions" tab
-- "Load unpacked extension" after git clone
+- Install dependencies & build
+- "Load unpacked extension" 
+- select "dist" folder
