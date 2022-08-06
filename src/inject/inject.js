@@ -28,14 +28,17 @@ class TWExtension {
     async _onEncryptButtonClick(event){
         event.preventDefault();
         /**
-         * @type {HTMLInputElement}
+         * @type {HTMLInputElement | null}
          */
         const textarea = document.querySelector("textarea#message");
-        const str = textarea.value.substring(textarea.selectionStart, textarea.selectionEnd);
+        if(!textarea) { return; }
+        if (typeof textarea.selectionStart === 'number' && typeof textarea.selectionEnd === 'number') {
+            const str = textarea.value.substring(textarea.selectionStart, textarea.selectionEnd);
     
-        const encrypted = await this._encrypt(str);
-        if(encrypted){
-            textarea.value = textarea.value.replace(str, `[code]${encrypted}[/code]`);
+            const encrypted = await this._encrypt(str);
+            if(encrypted){
+                textarea.value = textarea.value.replace(str, `[code]${encrypted}[/code]`);
+            }
         }
     }
 
@@ -58,7 +61,7 @@ class TWExtension {
 
     /**
      * @param {string} str
-     * @returns {Promise<null|string>}
+     * @returns {Promise<null | string>}
      */
     async _encrypt(str) {
         try {
@@ -66,7 +69,7 @@ class TWExtension {
             const encrypt = await req.json();
 
             if(!encrypt || !encrypt.message){
-                return;
+                return null;
             }
     
             return encrypt.message;
@@ -106,12 +109,12 @@ class TWExtension {
                     const code = coded[idx];
                     const clear = decoded[idx];
 
-                    const onDecryptCode = (event) => {
+                    const onDecryptCode = (/** @type {MouseEvent} */ event) => {
                         event.preventDefault();
                         const parent = newCode.parentElement;
                         const oldCode = newCode;
                         newCode = this._activateLinks(clear);
-                        parent.replaceChild(newCode, oldCode);
+                        parent?.replaceChild(newCode, oldCode);
                         this._blur(newCode);
 
                         // @ts-ignore
@@ -119,23 +122,22 @@ class TWExtension {
                         showOriginal.onclick = onShowCode;
                     };
 
-                    const onShowCode = (event) => {
+                    const onShowCode = (/** @type {MouseEvent} */ event) => {
                         event.preventDefault();
                         newCode.innerText = code;
                         this._blur(newCode);
-                        // @ts-ignore
+                        // @ts-expect-error Convert ext to Typescript (+ use browser.i18n instead with webextension-polyfill)
                         showOriginal.innerText = chrome.i18n.getMessage("showDecrypted");
                         showOriginal.onclick = onDecryptCode;
                     };
 
                     showOriginal.onclick = onShowCode;
-
-                    // @ts-ignore
+                    // @ts-expect-error Convert ext to Typescript
                     showOriginal.innerText = chrome.i18n.getMessage("showOriginal");
-                    codeElement.parentElement.replaceChild(newCode, codeElement);
+                    codeElement?.parentElement?.replaceChild(newCode, codeElement);
 
-                    const parentCodeBoxP = newCode.parentElement.parentElement.querySelector('p');
-                    parentCodeBoxP.appendChild(showOriginal);
+                    const parentCodeBoxP = newCode?.parentElement?.parentElement?.querySelector('p');
+                    parentCodeBoxP?.appendChild(showOriginal);
 
                     newCode.setAttribute('data-origin-twl', coded[idx]);
                     this._blur(newCode);
@@ -176,11 +178,11 @@ class TWExtension {
     }
 
     /**
-     * @returns {string|null} username of the user
+     * @returns {string | null} username of the user
      */
     _username(){
         /**
-         * @type {HTMLSpanElement}
+         * @type {HTMLSpanElement | null}
          */
         const usernameContainer = document.querySelector('#usernameExt span');
         if(usernameContainer){
@@ -199,7 +201,7 @@ class TWExtension {
 
         const re = /^(?:(?:https?|ftp):\/\/)?(?:\S+(?::\S*)?@)?(?:(?!(?:10|127)(?:\.\d{1,3}){3})(?!(?:169\.254|192\.168)(?:\.\d{1,3}){2})(?!172\.(?:1[6-9]|2\d|3[0-1])(?:\.\d{1,3}){2})(?:[1-9]\d?|1\d\d|2[01]\d|22[0-3])(?:\.(?:1?\d{1,2}|2[0-4]\d|25[0-5])){2}(?:\.(?:[1-9]\d?|1\d\d|2[0-4]\d|25[0-4]))|(?:(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)(?:\.(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)*(?:\.(?:[a-z\u00a1-\uffff]{2,}))\.?)(?::\d{2,5})?(?:[/?#]\S*)/mgi;
         /**
-         * @type {RegExpExecArray}
+         * @type {RegExpExecArray | null}
          */
         let m;
         while ((m = re.exec(str)) !== null) {
@@ -232,7 +234,7 @@ class TWExtension {
         for(let i = 0; i < parsedBody.childNodes.length; i++){
             const tag = parsedBody.childNodes[i];
 
-            if(tag instanceof Text){
+            if(tag instanceof Text && tag.textContent){
                 element.append(document.createTextNode(tag.textContent));
             } else if(tag instanceof HTMLAnchorElement){
                 element.appendChild(tag.cloneNode(true));
