@@ -1,7 +1,7 @@
 export default class TWExtension {
     private _separator: string = '{{|}}';
 
-    _addEncryptButton() {
+    _addEncryptButton(): void {
         const buttonsContainer = document.getElementById("format-buttons");
 
         if(!buttonsContainer){ return; }
@@ -14,7 +14,7 @@ export default class TWExtension {
         buttonsContainer.appendChild(add);
     }
 
-    async _onEncryptButtonClick(event: MouseEvent){
+    async _onEncryptButtonClick(event: MouseEvent): Promise<void> {
         event.preventDefault();
         const textarea = document.querySelector<HTMLTextAreaElement>("textarea#message");
         if(!textarea) { return; }
@@ -137,7 +137,7 @@ export default class TWExtension {
         return "https://live.thiweb.com/api.php?";
     }
 
-    get _codes(): NodeListOf<HTMLElement>{
+    get _codes(): NodeListOf<HTMLElement> {
         return document.querySelectorAll('code');
     }
 
@@ -214,7 +214,7 @@ export default class TWExtension {
         return params.join(this._separator);
     }
 
-    async run(): Promise<void>{
+    async run(): Promise<void> {
         if(this._codes.length === 0){
             return;
         }
