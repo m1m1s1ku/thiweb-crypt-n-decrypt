@@ -13,9 +13,11 @@ async function _onSubmit(event: SubmitEvent){
   event.preventDefault();
   if(!event.target) { return; }
 
-  console.warn('submit', event.target);
-  // @ts-expect-error : TODO Debug
-  const clear = event.target[0].value.trim().replace(/\n/g,' ');
+  const form = event.target as HTMLFormElement;
+  const formInput = form.querySelector<HTMLInputElement>('input#toCrypt');
+  const clear = formInput?.value.trim().replace(/\n/g,' ');
+  
+  if(!clear) { return; }
 
   try {
     const encrypted = await _encrypt(clear);
