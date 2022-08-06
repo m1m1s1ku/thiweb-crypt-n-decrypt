@@ -28,7 +28,7 @@
     "optional_host_permissions": [
         "*://*/*"
     ],
-    "applications": {
+    "browser_specific_settings": {
       "gecko": {
           "id": "{0b6555af-b17c-44b9-8e95-ab1e554dca4f}"
       }
