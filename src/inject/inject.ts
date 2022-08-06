@@ -1,12 +1,5 @@
-/**
- * ThiWeb Auto-decrypt | Browser extension
- */
-// @ts-check
-
-class TWExtension {
-    constructor(){
-        this._separator = '{{|}}';
-    }
+export default class TWExtension {
+    private _separator: string = '{{|}}';
 
     _addEncryptButton() {
         const buttonsContainer = document.getElementById("format-buttons");
@@ -22,15 +15,9 @@ class TWExtension {
         buttonsContainer.appendChild(add);
     }
 
-    /**
-     * @param {Event} event
-     */
-    async _onEncryptButtonClick(event){
+    async _onEncryptButtonClick(event: MouseEvent){
         event.preventDefault();
-        /**
-         * @type {HTMLInputElement | null}
-         */
-        const textarea = document.querySelector("textarea#message");
+        const textarea = document.querySelector<HTMLTextAreaElement>("textarea#message");
         if(!textarea) { return; }
         if (typeof textarea.selectionStart === 'number' && typeof textarea.selectionEnd === 'number') {
             const str = textarea.value.substring(textarea.selectionStart, textarea.selectionEnd);
@@ -44,9 +31,8 @@ class TWExtension {
 
     /**
      * Check if ext can be used (logged in)
-     * @returns {Promise<boolean>}
      */
-    async _check() {    
+    async _check(): Promise<boolean> {    
         if(!document.getElementById('usernameExt')){
             return false; 
         }
@@ -59,11 +45,7 @@ class TWExtension {
         return true;
     }
 
-    /**
-     * @param {string} str
-     * @returns {Promise<null | string>}
-     */
-    async _encrypt(str) {
+    async _encrypt(str: string): Promise<null | string> {
         try {
             const req = await fetch(this._endpoint('code', encodeURIComponent(str)));
             const encrypt = await req.json();
@@ -80,10 +62,7 @@ class TWExtension {
         return null;
     }
 
-    /**
-     * @returns {Promise<void>}
-     */
-    async _decode(){
+    async _decode(): Promise<void>{
         if(this._codes.length === 0){
             return;
         }
@@ -109,7 +88,7 @@ class TWExtension {
                     const code = coded[idx];
                     const clear = decoded[idx];
 
-                    const onDecryptCode = (/** @type {MouseEvent} */ event) => {
+                    const onDecryptCode = (/** @type {MouseEvent} */ event: MouseEvent) => {
                         event.preventDefault();
                         const parent = newCode.parentElement;
                         const oldCode = newCode;
@@ -122,7 +101,7 @@ class TWExtension {
                         showOriginal.onclick = onShowCode;
                     };
 
-                    const onShowCode = (/** @type {MouseEvent} */ event) => {
+                    const onShowCode = (/** @type {MouseEvent} */ event: MouseEvent) => {
                         event.preventDefault();
                         newCode.innerText = code;
                         this._blur(newCode);
@@ -149,42 +128,27 @@ class TWExtension {
         }
     }
 
-    /**
-     * @param {HTMLElement} elem
-     */
-    _blur(elem){
+    _blur(elem: HTMLElement): void {
         elem.animate([{ filter: 'blur(5px)'}, { filter: 'none' }], { duration: 300 });
     }
 
-    /**
-     * @param {string} type
-     * @param {string} body
-     * @returns {string}
-     */
-    _endpoint(type, body){
+    _endpoint(type: string, body: string): string {
         return `${this._apiURL}${type}&str=${body}`;
     }
 
-    get _apiURL(){
+    get _apiURL(): string {
         return "https://live.thiweb.com/api.php?";
     }
 
-    /**
-     * @readonly
-     * @returns {HTMLCollectionOf<HTMLElement>}
-     */
-    get _codes(){
-        return document.getElementsByTagName('code');
+    get _codes(): NodeListOf<HTMLElement>{
+        return document.querySelectorAll('code');
     }
 
-    /**
-     * @returns {string | null} username of the user
-     */
-    _username(){
+    _username(): string | null {
         /**
          * @type {HTMLSpanElement | null}
          */
-        const usernameContainer = document.querySelector('#usernameExt span');
+        const usernameContainer: HTMLSpanElement | null = document.querySelector('#usernameExt span');
         if(usernameContainer){
             return usernameContainer.innerText;
         } else {
@@ -192,18 +156,14 @@ class TWExtension {
         }
     }
 
-    /**
-     * @param {string} str
-     * @returns {HTMLElement}
-     */
-    _activateLinks(str) {
+    _activateLinks(str: string): HTMLElement {
         const codeElement = document.createElement('code');
 
         const re = /^(?:(?:https?|ftp):\/\/)?(?:\S+(?::\S*)?@)?(?:(?!(?:10|127)(?:\.\d{1,3}){3})(?!(?:169\.254|192\.168)(?:\.\d{1,3}){2})(?!172\.(?:1[6-9]|2\d|3[0-1])(?:\.\d{1,3}){2})(?:[1-9]\d?|1\d\d|2[01]\d|22[0-3])(?:\.(?:1?\d{1,2}|2[0-4]\d|25[0-5])){2}(?:\.(?:[1-9]\d?|1\d\d|2[0-4]\d|25[0-4]))|(?:(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)(?:\.(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)*(?:\.(?:[a-z\u00a1-\uffff]{2,}))\.?)(?::\d{2,5})?(?:[/?#]\S*)/mgi;
         /**
          * @type {RegExpExecArray | null}
          */
-        let m;
+        let m: RegExpExecArray | null;
         while ((m = re.exec(str)) !== null) {
             if (m.index === re.lastIndex) {
                 re.lastIndex++;
@@ -219,11 +179,7 @@ class TWExtension {
         return codeElement;
     }
     
-    /**
-     * @param {string} str
-     * @param {HTMLElement} element
-     */
-    _insertUnsafeHTML(str, element, clear = false){
+    _insertUnsafeHTML(str: string, element: HTMLElement, clear = false): HTMLElement {
         if(clear){
             element.innerHTML = '';
         }
@@ -244,17 +200,11 @@ class TWExtension {
         return element;
     }
 
-    /**
-     * @param {string} str
-     */
-    _clean(str){
+    _clean(str: string): string {
         return str.trim().replace(/\n/g,' ');
     }
 
-    /**
-     * @returns {string}
-     */
-    _params(){
+    _params(): string {
         const params = [];
 
         for(const code of this._codes){
@@ -267,10 +217,7 @@ class TWExtension {
         return params.join(this._separator);
     }
 
-    /**
-     * @returns {Promise<void>}
-     */
-    async run(){
+    async run(): Promise<void>{
         if(this._codes.length === 0){
             return;
         }

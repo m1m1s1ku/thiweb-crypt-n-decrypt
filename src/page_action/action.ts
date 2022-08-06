@@ -1,22 +1,20 @@
-// @ts-check
-const form = document.getElementById("main");
-/**
- * @type {HTMLInputElement | null}
- */
-const ghost = document.querySelector("input#ghost");
 
-/**
- * @type {HTMLParagraphElement | null}
- */
-const message = document.querySelector('p#notifCopy');
+export {}
+
+const form = document.querySelector<HTMLFormElement>("form#main");
+const ghost = document.querySelector<HTMLInputElement>("input#ghost");
+const message = document.querySelector<HTMLParagraphElement>('p#notifCopy');
 
 /**
  *
  * @param {Event} event
  */
-async function _onSubmit(event){
+async function _onSubmit(event: SubmitEvent){
   event.preventDefault();
   if(!event.target) { return; }
+
+  console.warn('submit', event.target);
+  // @ts-expect-error : TODO Debug
   const clear = event.target[0].value.trim().replace(/\n/g,' ');
 
   try {
@@ -45,11 +43,7 @@ if(form) {
   form.addEventListener("submit", _onSubmit);
 }
 
-/**
- * @param {string} str
- * @returns {Promise<string>} encrypted
- */
-async function _encrypt(str) {
+async function _encrypt(str: string): Promise<string> {
   try {
     const res = await fetch("https://live.thiweb.com/api.php?code&str=" + encodeURIComponent(str)).then(res => res.json());
     return res.message;
