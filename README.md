@@ -30,7 +30,7 @@ Avoid this method, except for development ( Store extensions stay updated, not u
 - Clone & build
 - Go to chrome settings
 - Activate developer mode
-- "Extensions" tab
+- "Extensions" tab ([chrome://extensions](chrome://extensions))
 - Install dependencies & build
 - "Load unpacked extension" 
 - select "dist" folder
