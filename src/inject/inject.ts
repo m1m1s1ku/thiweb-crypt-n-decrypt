@@ -114,7 +114,6 @@ export default class TWExtension {
                     const parentCodeBoxP = newCode?.parentElement?.parentElement?.querySelector('p');
                     parentCodeBoxP?.appendChild(showOriginal);
 
-                    newCode.setAttribute('data-origin-twl', coded[idx]);
                     this._blur(newCode);
                     idx++;
                 }
