@@ -1,0 +1,26 @@
+{
+  "name": "thiweb-crypt-n-decrypt",
+  "version": "1.7.0",
+  "description": "Auto-decrypt TWL2 links. Published web extension",
+  "main": "index.js",
+  "scripts": {
+    "build": "npx web-ext build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Ghostfly/thiweb-crypt-n-decrypt.git"
+  },
+  "keywords": [
+    "web-extension",
+    "thiweb"
+  ],
+  "author": "Ghostfly",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Ghostfly/thiweb-crypt-n-decrypt/issues"
+  },
+  "homepage": "https://github.com/Ghostfly/thiweb-crypt-n-decrypt#readme",
+  "dependencies": {
+    "web-ext": "^7.1.1"
+  }
+}

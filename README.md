@@ -7,8 +7,16 @@ Decrypt automatically links on the forum ! | Web extension for Forum.ThiWeb.com
 - [Firefox Addons](https://addons.mozilla.org/fr/firefox/addon/thiweb-cryptdecrypt/)
 
 ### Release building :
-- Install web-ext : `npm install --global web-ext`
-- Run : `web-ext build` at the root of the ext
+
+Install dependencies :
+```sh
+$ npm install
+```
+
+Build package :
+```
+$ npm run build
+```
 
 ### Manual :
 
