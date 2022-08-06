@@ -8,7 +8,6 @@ export default class TWExtension {
     
         const add = document.createElement("button");
         add.className = "button button-secondary";
-        // @ts-ignore
         add.innerText = chrome.i18n.getMessage("cryptSelection");
         add.onclick = this._onEncryptButtonClick.bind(this);
     
@@ -105,13 +104,11 @@ export default class TWExtension {
                         event.preventDefault();
                         newCode.innerText = code;
                         this._blur(newCode);
-                        // @ts-expect-error Convert ext to Typescript (+ use browser.i18n instead with webextension-polyfill)
                         showOriginal.innerText = chrome.i18n.getMessage("showDecrypted");
                         showOriginal.onclick = onDecryptCode;
                     };
 
                     showOriginal.onclick = onShowCode;
-                    // @ts-expect-error Convert ext to Typescript
                     showOriginal.innerText = chrome.i18n.getMessage("showOriginal");
                     codeElement?.parentElement?.replaceChild(newCode, codeElement);
 

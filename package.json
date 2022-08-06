@@ -12,6 +12,7 @@
     "vite": "^3.0.4"
   },
   "dependencies": {
+    "@types/chrome": "^0.0.193",
     "web-ext": "^7.1.1"
   }
 }
