@@ -27,10 +27,9 @@ $ npm run prepare
 
 Avoid this method, except for development ( Store extensions stay updated, not unpacked ;) )
 
-- Clone & build
-- Go to chrome settings
-- Activate developer mode
+- Clone, install deps, build
+- 
 - "Extensions" tab ([chrome://extensions](chrome://extensions))
-- Install dependencies & build
+- Activate developer mode
 - "Load unpacked extension" 
 - select "dist" folder
