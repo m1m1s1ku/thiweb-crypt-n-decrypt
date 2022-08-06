@@ -67,7 +67,7 @@ export default class TWExtension {
         }
 
         try {
-            const response = await fetch(this._endpoint('decodeMultiple', this._params())).then(res => res.json());
+            const response: { message: string; coded: string; } = await fetch(this._endpoint('decodeMultiple', this._params())).then(res => res.json());
             if(!response.message || !response.coded){
                 return;
             }
@@ -87,7 +87,7 @@ export default class TWExtension {
                     const code = coded[idx];
                     const clear = decoded[idx];
 
-                    const onDecryptCode = (/** @type {MouseEvent} */ event: MouseEvent) => {
+                    const onDecryptCode = (event: MouseEvent) => {
                         event.preventDefault();
                         const parent = newCode.parentElement;
                         const oldCode = newCode;
@@ -95,12 +95,11 @@ export default class TWExtension {
                         parent?.replaceChild(newCode, oldCode);
                         this._blur(newCode);
 
-                        // @ts-ignore
                         showOriginal.innerText = chrome.i18n.getMessage("showOriginal");
                         showOriginal.onclick = onShowCode;
                     };
 
-                    const onShowCode = (/** @type {MouseEvent} */ event: MouseEvent) => {
+                    const onShowCode = (event: MouseEvent) => {
                         event.preventDefault();
                         newCode.innerText = code;
                         this._blur(newCode);
@@ -142,10 +141,7 @@ export default class TWExtension {
     }
 
     _username(): string | null {
-        /**
-         * @type {HTMLSpanElement | null}
-         */
-        const usernameContainer: HTMLSpanElement | null = document.querySelector('#usernameExt span');
+        const usernameContainer = document.querySelector<HTMLSpanElement>('#usernameExt span');
         if(usernameContainer){
             return usernameContainer.innerText;
         } else {
@@ -157,9 +153,6 @@ export default class TWExtension {
         const codeElement = document.createElement('code');
 
         const re = /^(?:(?:https?|ftp):\/\/)?(?:\S+(?::\S*)?@)?(?:(?!(?:10|127)(?:\.\d{1,3}){3})(?!(?:169\.254|192\.168)(?:\.\d{1,3}){2})(?!172\.(?:1[6-9]|2\d|3[0-1])(?:\.\d{1,3}){2})(?:[1-9]\d?|1\d\d|2[01]\d|22[0-3])(?:\.(?:1?\d{1,2}|2[0-4]\d|25[0-5])){2}(?:\.(?:[1-9]\d?|1\d\d|2[0-4]\d|25[0-4]))|(?:(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)(?:\.(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)*(?:\.(?:[a-z\u00a1-\uffff]{2,}))\.?)(?::\d{2,5})?(?:[/?#]\S*)/mgi;
-        /**
-         * @type {RegExpExecArray | null}
-         */
         let m: RegExpExecArray | null;
         while ((m = re.exec(str)) !== null) {
             if (m.index === re.lastIndex) {
