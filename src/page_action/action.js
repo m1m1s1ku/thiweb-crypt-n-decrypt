@@ -1,11 +1,14 @@
 // @ts-check
 const form = document.getElementById("main");
 /**
- * @type {HTMLInputElement}
+ * @type {HTMLInputElement | null}
  */
-// @ts-ignore
-const ghost = document.getElementById("ghost");
-const message = document.getElementById('notifCopy');
+const ghost = document.querySelector("input#ghost");
+
+/**
+ * @type {HTMLParagraphElement | null}
+ */
+const message = document.querySelector('p#notifCopy');
 
 /**
  *
@@ -13,22 +16,34 @@ const message = document.getElementById('notifCopy');
  */
 async function _onSubmit(event){
   event.preventDefault();
+  if(!event.target) { return; }
   const clear = event.target[0].value.trim().replace(/\n/g,' ');
-  const encrypted = await _encrypt(clear);
-  ghost.value = encrypted;
 
-  ghost.select(); // Select input
+  try {
+    const encrypted = await _encrypt(clear);
+    if (ghost) {
+      ghost.value = encrypted;
+      ghost.select();
+    }
 
-  // Copy to user clipboard
-  if(document.execCommand('copy')){
-    message.style.display = "block";
-    setTimeout(() => {
-      message.style.display = "none";
-    }, 1000);
+    try {
+      await navigator.clipboard.writeText(encrypted);
+      if(!message) { return; }
+      message.style.display = "block";
+      setTimeout(() => {
+        message.style.display = "none";
+      }, 1000);
+    } catch (err) {
+      console.error('Can\'t write into clipboard');
+    }
+  } catch (err) {
+    console.error("Error while encrypting string", clear, err);
   }
 }
 
-form.addEventListener("submit", _onSubmit);
+if(form) {
+  form.addEventListener("submit", _onSubmit);
+}
 
 /**
  * @param {string} str
@@ -39,6 +54,6 @@ async function _encrypt(str) {
     const res = await fetch("https://live.thiweb.com/api.php?code&str=" + encodeURIComponent(str)).then(res => res.json());
     return res.message;
   } catch (err){
-    console.error("Error while encrypting string", str);
+    return Promise.reject(err);
   }
 }
