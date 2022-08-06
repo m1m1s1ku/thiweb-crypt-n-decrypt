@@ -5,10 +5,6 @@ const form = document.querySelector<HTMLFormElement>("form#main");
 const ghost = document.querySelector<HTMLInputElement>("input#ghost");
 const message = document.querySelector<HTMLParagraphElement>('p#notifCopy');
 
-/**
- *
- * @param {Event} event
- */
 async function _onSubmit(event: SubmitEvent){
   event.preventDefault();
   if(!event.target) { return; }
