@@ -20,7 +20,7 @@ $ npm run build
 
 Package for stores :
 ```
-$ npm run prepare
+$ npm run bundle
 ```
 
 ### Manual :
