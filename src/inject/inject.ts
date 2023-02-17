@@ -174,7 +174,7 @@ export default class TWExtension {
         return codeElement;
     }
     
-    _insertUnsafeHTML(str: string, element: HTMLElement): HTMLElement {
+    _insertUnsafeHTML(str: string, element: HTMLElement): void {
         const parser = new DOMParser();
         const parsedBody = parser.parseFromString(str, 'text/html').body;
 
@@ -187,8 +187,6 @@ export default class TWExtension {
                 element.appendChild(tag.cloneNode(true));
             }
         }
-
-        return element;
     }
 
     _clean(str: string): string {
