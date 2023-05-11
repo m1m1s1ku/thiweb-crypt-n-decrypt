@@ -9,8 +9,13 @@ function hexToText(hex: string): string {
       const charCode = parseInt(hexByte, 16);
       result += String.fromCharCode(charCode);
     }
-    return decodeURIComponent(escape(result));
-  }
+    const escaped = escape(result);
+    try {
+        return decodeURIComponent(escaped);
+    } catch (err) {
+        return unescape(escaped);
+    }
+}
 
 function decodeTWL(str: string): string {
     str = str.replace(/[\r\n\s]+/g, "");
@@ -24,7 +29,17 @@ function decodeTWL(str: string): string {
     let hex = match[2];
     
     if (version == "TWL2.0") {
-      hex = hex.replace(/A0D0/g, "AD");
+        let patched = "";
+        for(let i = 0; i < str.length; i += 2) {
+            const c = str.substring(i, i+2);
+            if(c == "AD") {
+                patched += "A0D0";
+            } else {
+                patched += c;
+            }
+        }
+        hex = patched;
+        // hex = hex.replace(/A0D0/g, "AD");
     }
     
     return hexToText(reverseString(hex));
