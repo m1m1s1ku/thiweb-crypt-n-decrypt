@@ -5,29 +5,29 @@ function reverseString(str: string): string {
 function hexToText(hex: string): string {
     let result = "";
     for (let i = 0; i < hex.length; i += 2) {
-      const hexByte = hex.substr(i, 2);
+      const hexByte = hex.substring(i, i + 2);
       const charCode = parseInt(hexByte, 16);
       result += String.fromCharCode(charCode);
     }
     return decodeURIComponent(escape(result));
   }
 
-function decode(coded: string, version = "TWL2.3"): string {
-    coded = coded.replace(/[\r\n\s]+/g, "");
+function decodeTWL(str: string): string {
+    str = str.replace(/[\r\n\s]+/g, "");
     
-    const match = coded.match(/^TWL2\.\d{1}([0-9A-F]+)$/);
+    const match = str.match(/(^TWL2\.\d{1})([0-9A-F]+)$/);
     if (!match) {
-        return coded;
+        return str;
     }
     
-    let hex = match[1];
+    const version = match[1];
+    let hex = match[2];
     
     if (version == "TWL2.0") {
       hex = hex.replace(/A0D0/g, "AD");
     }
     
-    const reversed = reverseString(hex);
-    return hexToText(reversed);
+    return hexToText(reverseString(hex));
 }
 
 export default class TWExtension {
@@ -98,7 +98,7 @@ export default class TWExtension {
 
         try {
             const responses = this._params().map((code) => {
-                return { coded: code, message: decode(code)}
+                return { coded: code, message: decodeTWL(code)}
             });
             for(const response of responses) {
                 if(!response.message || !response.coded){
