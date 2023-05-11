@@ -1,6 +1,6 @@
 {
   "name": "thiweb-crypt-decrypt-ts",
-  "version": "2.1.0",
+  "version": "2.1.1",
   "type": "module",
   "scripts": {
     "build": "tsc && vite build",

@@ -98,7 +98,7 @@ export default class TWExtension {
 
         try {
             const responses = this._params().map((code) => {
-                return { coded: code, message: decodeTWL(code)}
+                return { coded: code, message: decodeTWL(code) };
             });
             for(const response of responses) {
                 if(!response.message || !response.coded){
@@ -109,45 +109,44 @@ export default class TWExtension {
                 const coded = response.coded;
         
                 for(const codeElement of this._codes){
-                    if (this._clean(codeElement.innerHTML) == coded) {
-                        let newCode = this._activateLinks(decoded);
-                        const showOriginal = document.createElement('a');
-                        showOriginal.style.marginLeft = '5px';
-                        showOriginal.href = "#";
-                        showOriginal.style.cursor = 'pointer';
-
-                        const code = coded;
-                        const clear = decoded;
-
-                        const onDecryptCode = (event: MouseEvent) => {
-                            event.preventDefault();
-                            const parent = newCode.parentElement;
-                            const oldCode = newCode;
-                            newCode = this._activateLinks(clear);
-                            parent?.replaceChild(newCode, oldCode);
-                            this._blur(newCode);
-
-                            showOriginal.innerText = chrome.i18n.getMessage("showOriginal");
-                            showOriginal.onclick = onShowCode;
-                        };
-
-                        const onShowCode = (event: MouseEvent) => {
-                            event.preventDefault();
-                            newCode.innerText = code;
-                            this._blur(newCode);
-                            showOriginal.innerText = chrome.i18n.getMessage("showDecrypted");
-                            showOriginal.onclick = onDecryptCode;
-                        };
-
-                        showOriginal.onclick = onShowCode;
-                        showOriginal.innerText = chrome.i18n.getMessage("showOriginal");
-                        codeElement?.parentElement?.replaceChild(newCode, codeElement);
-
-                        const parentCodeBoxP = newCode?.parentElement?.parentElement?.querySelector('p');
-                        parentCodeBoxP?.appendChild(showOriginal);
-
-                        this._blur(newCode);
+                    if(this._clean(codeElement.innerHTML) !== coded) {
+                        continue;
                     }
+
+                    let newCode = this._activateLinks(decoded);
+                    const showOriginal = document.createElement('a');
+                    showOriginal.style.marginLeft = '5px';
+                    showOriginal.href = "#";
+                    showOriginal.style.cursor = 'pointer';
+
+                    const onDecryptCode = (event: MouseEvent) => {
+                        event.preventDefault();
+                        const parent = newCode.parentElement;
+                        const oldCode = newCode;
+                        newCode = this._activateLinks(decoded);
+                        parent?.replaceChild(newCode, oldCode);
+                        this._blur(newCode);
+
+                        showOriginal.innerText = chrome.i18n.getMessage("showOriginal");
+                        showOriginal.onclick = onShowCode;
+                    };
+
+                    const onShowCode = (event: MouseEvent) => {
+                        event.preventDefault();
+                        newCode.innerText = coded;
+                        this._blur(newCode);
+                        showOriginal.innerText = chrome.i18n.getMessage("showDecrypted");
+                        showOriginal.onclick = onDecryptCode;
+                    };
+
+                    showOriginal.onclick = onShowCode;
+                    showOriginal.innerText = chrome.i18n.getMessage("showOriginal");
+                    codeElement?.parentElement?.replaceChild(newCode, codeElement);
+
+                    const parentCodeBoxP = newCode?.parentElement?.parentElement?.querySelector('p');
+                    parentCodeBoxP?.appendChild(showOriginal);
+
+                    this._blur(newCode);
                 }
             }
         } catch (err){
@@ -167,8 +166,10 @@ export default class TWExtension {
         return "https://live.thiweb.com/api.php?";
     }
 
-    get _codes(): NodeListOf<HTMLElement> {
-        return document.querySelectorAll('code');
+    get _codes(): HTMLElement[] {
+        return Array.from(document.querySelectorAll('code')).filter(element => {
+            return element.innerHTML.startsWith('TWL');
+        });
     }
 
     _username(): string | null {
@@ -229,10 +230,7 @@ export default class TWExtension {
         const params = [];
 
         for(const code of this._codes){
-            const cleanup = this._clean(code.innerHTML);
-            if (cleanup.startsWith("TWL")) {
-                params.push(cleanup);
-            }
+            params.push(this._clean(code.innerHTML));
         }
 
         return params;
