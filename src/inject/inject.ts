@@ -1,6 +1,36 @@
-export default class TWExtension {
-    private _separator: string = '{{|}}';
+function reverseString(str: string): string {
+    return str.split("").reverse().join("");
+}
 
+function hexToText(hex: string): string {
+    let result = "";
+    for (let i = 0; i < hex.length; i += 2) {
+      const hexByte = hex.substr(i, 2);
+      const charCode = parseInt(hexByte, 16);
+      result += String.fromCharCode(charCode);
+    }
+    return decodeURIComponent(escape(result));
+  }
+
+function decode(coded: string, version = "TWL2.3"): string {
+    coded = coded.replace(/[\r\n\s]+/g, "");
+    
+    const match = coded.match(/^TWL2\.\d{1}([0-9A-F]+)$/);
+    if (!match) {
+        return coded;
+    }
+    
+    let hex = match[1];
+    
+    if (version == "TWL2.0") {
+      hex = hex.replace(/A0D0/g, "AD");
+    }
+    
+    const reversed = reverseString(hex);
+    return hexToText(reversed);
+}
+
+export default class TWExtension {
     _addEncryptButton(): void {
         const buttonsContainer = document.getElementById("format-buttons");
 
@@ -67,55 +97,57 @@ export default class TWExtension {
         }
 
         try {
-            const response: { message: string; coded: string; } = await fetch(this._endpoint('decodeMultiple', this._params())).then(res => res.json());
-            if(!response.message || !response.coded){
-                return;
-            }
+            const responses = this._params().map((code) => {
+                return { coded: code, message: decode(code)}
+            });
+            for(const response of responses) {
+                if(!response.message || !response.coded){
+                    return;
+                }
 
-            const decoded = response.message.split(this._separator);
-            const coded = response.coded.split(this._separator);
-    
-            let idx = 0;
-            for(const codeElement of this._codes){
-                if (this._clean(codeElement.innerHTML) == coded[idx]) {
-                    let newCode = this._activateLinks(decoded[idx]);
-                    const showOriginal = document.createElement('a');
-                    showOriginal.style.marginLeft = '5px';
-                    showOriginal.href = "#";
-                    showOriginal.style.cursor = 'pointer';
+                const decoded = response.message;
+                const coded = response.coded;
+        
+                for(const codeElement of this._codes){
+                    if (this._clean(codeElement.innerHTML) == coded) {
+                        let newCode = this._activateLinks(decoded);
+                        const showOriginal = document.createElement('a');
+                        showOriginal.style.marginLeft = '5px';
+                        showOriginal.href = "#";
+                        showOriginal.style.cursor = 'pointer';
 
-                    const code = coded[idx];
-                    const clear = decoded[idx];
+                        const code = coded;
+                        const clear = decoded;
 
-                    const onDecryptCode = (event: MouseEvent) => {
-                        event.preventDefault();
-                        const parent = newCode.parentElement;
-                        const oldCode = newCode;
-                        newCode = this._activateLinks(clear);
-                        parent?.replaceChild(newCode, oldCode);
-                        this._blur(newCode);
+                        const onDecryptCode = (event: MouseEvent) => {
+                            event.preventDefault();
+                            const parent = newCode.parentElement;
+                            const oldCode = newCode;
+                            newCode = this._activateLinks(clear);
+                            parent?.replaceChild(newCode, oldCode);
+                            this._blur(newCode);
 
-                        showOriginal.innerText = chrome.i18n.getMessage("showOriginal");
+                            showOriginal.innerText = chrome.i18n.getMessage("showOriginal");
+                            showOriginal.onclick = onShowCode;
+                        };
+
+                        const onShowCode = (event: MouseEvent) => {
+                            event.preventDefault();
+                            newCode.innerText = code;
+                            this._blur(newCode);
+                            showOriginal.innerText = chrome.i18n.getMessage("showDecrypted");
+                            showOriginal.onclick = onDecryptCode;
+                        };
+
                         showOriginal.onclick = onShowCode;
-                    };
+                        showOriginal.innerText = chrome.i18n.getMessage("showOriginal");
+                        codeElement?.parentElement?.replaceChild(newCode, codeElement);
 
-                    const onShowCode = (event: MouseEvent) => {
-                        event.preventDefault();
-                        newCode.innerText = code;
+                        const parentCodeBoxP = newCode?.parentElement?.parentElement?.querySelector('p');
+                        parentCodeBoxP?.appendChild(showOriginal);
+
                         this._blur(newCode);
-                        showOriginal.innerText = chrome.i18n.getMessage("showDecrypted");
-                        showOriginal.onclick = onDecryptCode;
-                    };
-
-                    showOriginal.onclick = onShowCode;
-                    showOriginal.innerText = chrome.i18n.getMessage("showOriginal");
-                    codeElement?.parentElement?.replaceChild(newCode, codeElement);
-
-                    const parentCodeBoxP = newCode?.parentElement?.parentElement?.querySelector('p');
-                    parentCodeBoxP?.appendChild(showOriginal);
-
-                    this._blur(newCode);
-                    idx++;
+                    }
                 }
             }
         } catch (err){
@@ -193,7 +225,7 @@ export default class TWExtension {
         return str.trim().replace(/\n/g,' ');
     }
 
-    _params(): string {
+    _params(): string[] {
         const params = [];
 
         for(const code of this._codes){
@@ -203,7 +235,7 @@ export default class TWExtension {
             }
         }
 
-        return params.join(this._separator);
+        return params;
     }
 
     async run(): Promise<void> {
