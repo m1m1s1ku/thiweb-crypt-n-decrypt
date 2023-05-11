@@ -9,7 +9,7 @@ function hexToText(hex: string): string {
       const charCode = parseInt(hexByte, 16);
       result += String.fromCharCode(charCode);
     }
-    const escaped = escape(result);
+    const escaped = escape(result.replaceAll('\x00', '').replaceAll('\x02', ''));
     try {
         return decodeURIComponent(escaped);
     } catch (err) {
@@ -19,6 +19,9 @@ function hexToText(hex: string): string {
 
 function decodeTWL(str: string): string {
     str = str.replace(/[\r\n\s]+/g, "");
+    str = str.replaceAll("\x20", "");
+    str = str.replaceAll("\x0D", "");
+    str = str.replaceAll("\x0A", "");
     
     const match = str.match(/(^TWL2\.\d{1})([0-9A-F]+)$/);
     if (!match) {
