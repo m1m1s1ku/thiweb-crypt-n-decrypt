@@ -3,8 +3,8 @@ Decrypt automatically links on the forum ! | Web extension for Forum.ThiWeb.com
 
 ## Install : 
 - [Chrome Web Store](https://chrome.google.com/webstore/detail/thiweb-auto-decrypt/noadaplbhpacekfmbhojlbldckniffce?hl=fr)
-- [Edge Store](https://microsoftedge.microsoft.com/addons/detail/jgcopilbhgndmjfbckfbfehjpeapcaed)
 - [Firefox Addons](https://addons.mozilla.org/fr/firefox/addon/thiweb-cryptdecrypt/)
+- [Edge Store (Unmaintained, prefer chrome.)](https://microsoftedge.microsoft.com/addons/detail/jgcopilbhgndmjfbckfbfehjpeapcaed)
 
 ### Release building :
 
