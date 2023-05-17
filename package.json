@@ -1,18 +1,18 @@
 {
   "name": "thiweb-crypt-decrypt-ts",
-  "version": "2.1.4",
+  "version": "2.1.5",
   "type": "module",
   "scripts": {
     "build": "tsc && vite build",
     "bundle": "npx web-ext build --source-dir ./dist/"
   },
   "devDependencies": {
-    "@crxjs/vite-plugin": "^1.0.14",
-    "typescript": "^4.9.5",
-    "vite": "^2.9.0"
+    "@crxjs/vite-plugin": "2.0.0-beta.17",
+    "typescript": "^5.0.4",
+    "vite": "^4.3.7"
   },
   "dependencies": {
-    "@types/chrome": "^0.0.213",
-    "web-ext": "^7.5.0"
+    "@types/chrome": "^0.0.236",
+    "web-ext": "^7.6.2"
   }
 }
