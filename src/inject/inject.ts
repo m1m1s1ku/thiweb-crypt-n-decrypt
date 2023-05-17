@@ -49,6 +49,19 @@ function decodeTWL(str: string): string {
 }
 
 export default class TWExtension {
+    async run(): Promise<void> {
+        this._addEncryptButton();
+
+        if(this._codes.length === 0){
+            return;
+        }
+
+        const canUse = await this._check();
+        if(canUse){
+            await this._decode();
+        }
+    }
+
     _addEncryptButton(): void {
         const buttonsContainer = document.getElementById("format-buttons");
 
@@ -252,19 +265,6 @@ export default class TWExtension {
         }
 
         return params;
-    }
-
-    async run(): Promise<void> {
-        this._addEncryptButton();
-
-        if(this._codes.length === 0){
-            return;
-        }
-
-        const canUse = await this._check();
-        if(canUse){
-            await this._decode();
-        }
     }
 }
 

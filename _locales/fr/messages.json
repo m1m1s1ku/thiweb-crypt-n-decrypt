@@ -1,7 +1,4 @@
 {
-    "connectAlert": {
-        "message": "Vous devez être connecté et avoir au moins un message pour utiliser le décryptage automatique de l'extension."
-    },
     "cryptSelection": {
         "message": "Crypter la sélection"
     },

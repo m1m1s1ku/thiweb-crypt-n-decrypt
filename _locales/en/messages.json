@@ -1,7 +1,4 @@
 {
-    "connectAlert": {
-        "message": "You must be logged in and have at least one message to use dynamic decryption."
-    },
     "cryptSelection": {
         "message": "Encrypt selection"
     },
