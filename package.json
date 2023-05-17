@@ -4,10 +4,13 @@
   "type": "module",
   "scripts": {
     "build": "tsc && vite build",
-    "bundle": "npx web-ext build --source-dir ./dist/"
+    "bundle-chrome": "npx web-ext build --source-dir ./dist/",
+    "prepare-firefox": "ts-node --esm ./scripts/firefox-manifest.ts",
+    "bundle-firefox": "npx web-ext build --source-dir ./dist-firefox/"
   },
   "devDependencies": {
     "@crxjs/vite-plugin": "2.0.0-beta.17",
+    "ts-node": "^10.9.1",
     "typescript": "^5.0.4",
     "vite": "^4.3.7"
   },
