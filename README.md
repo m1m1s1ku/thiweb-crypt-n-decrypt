@@ -18,9 +18,15 @@ Build :
 $ npm run build
 ```
 
-Package for stores :
+Package for Firefox :
 ```
-$ npm run bundle
+$ npm run prepare-firefox # Patch Manifest V3 into V2..
+$ npm run bundle-firefox # Generate zip
+```
+
+Package for Chrome :
+```
+$ npm run bundle-chrome
 ```
 
 ### Manual :
