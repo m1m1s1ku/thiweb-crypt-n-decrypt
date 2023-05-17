@@ -33,8 +33,8 @@ function decodeTWL(str: string): string {
     
     if (version == "TWL2.0") {
         let patched = "";
-        for(let i = 0; i < str.length; i += 2) {
-            const c = str.substring(i, i+2);
+        for(let i = 0; i < hex.length; i += 2) {
+            const c = hex.substring(i, i+2);
             if(c == "AD") {
                 patched += "A0D0";
             } else {
@@ -127,61 +127,49 @@ export default class TWExtension {
             return;
         }
 
-        try {
-            const responses = this._params().map((code) => {
-                return { coded: code, message: decodeTWL(code) };
-            });
-            for(const response of responses) {
-                if(!response.message || !response.coded){
-                    return;
-                }
-
-                const decoded = response.message;
-                const coded = response.coded;
-        
-                for(const codeElement of this._codes){
-                    if(this._clean(codeElement.innerHTML) !== coded) {
-                        continue;
-                    }
-
-                    let newCode = this._activateLinks(decoded);
-                    const showOriginal = document.createElement('a');
-                    showOriginal.style.marginLeft = '5px';
-                    showOriginal.href = "#";
-                    showOriginal.style.cursor = 'pointer';
-
-                    const onDecryptCode = (event: MouseEvent) => {
-                        event.preventDefault();
-                        const parent = newCode.parentElement;
-                        const oldCode = newCode;
-                        newCode = this._activateLinks(decoded);
-                        parent?.replaceChild(newCode, oldCode);
-                        this._blur(newCode);
-
-                        showOriginal.innerText = chrome.i18n.getMessage("showOriginal");
-                        showOriginal.onclick = onShowCode;
-                    };
-
-                    const onShowCode = (event: MouseEvent) => {
-                        event.preventDefault();
-                        newCode.innerText = coded;
-                        this._blur(newCode);
-                        showOriginal.innerText = chrome.i18n.getMessage("showDecrypted");
-                        showOriginal.onclick = onDecryptCode;
-                    };
-
-                    showOriginal.onclick = onShowCode;
-                    showOriginal.innerText = chrome.i18n.getMessage("showOriginal");
-                    codeElement?.parentElement?.replaceChild(newCode, codeElement);
-
-                    const parentCodeBoxP = newCode?.parentElement?.parentElement?.querySelector('p');
-                    parentCodeBoxP?.appendChild(showOriginal);
-
-                    this._blur(newCode);
-                }
+        for(const { element, raw } of this._params()) {
+            let clear: string;
+            try {
+                clear = decodeTWL(raw);
+            } catch (err) {
+                console.error("Error while decoding", err);
+                continue;
             }
-        } catch (err){
-            console.error("Error while decoding", err);
+
+            let newCode = this._activateLinks(clear);
+            const showOriginal = document.createElement('a');
+            showOriginal.style.marginLeft = '5px';
+            showOriginal.href = "#";
+            showOriginal.style.cursor = 'pointer';
+
+            const onDecryptCode = (event: MouseEvent) => {
+                event.preventDefault();
+                const parent = newCode.parentElement;
+                const oldCode = newCode;
+                newCode = this._activateLinks(clear);
+                parent?.replaceChild(newCode, oldCode);
+                this._blur(newCode);
+
+                showOriginal.innerText = chrome.i18n.getMessage("showOriginal");
+                showOriginal.onclick = onShowCode;
+            };
+
+            const onShowCode = (event: MouseEvent) => {
+                event.preventDefault();
+                newCode.innerText = raw;
+                this._blur(newCode);
+                showOriginal.innerText = chrome.i18n.getMessage("showDecrypted");
+                showOriginal.onclick = onDecryptCode;
+            };
+
+            showOriginal.onclick = onShowCode;
+            showOriginal.innerText = chrome.i18n.getMessage("showOriginal");
+            element?.parentElement?.replaceChild(newCode, element);
+
+            const parentCodeBoxP = newCode?.parentElement?.parentElement?.querySelector('p');
+            parentCodeBoxP?.appendChild(showOriginal);
+
+            this._blur(newCode);
         }
     }
 
@@ -257,11 +245,14 @@ export default class TWExtension {
         return str.trim().replace(/\n/g,' ');
     }
 
-    _params(): string[] {
+    _params(): { element: HTMLElement, raw: string }[] {
         const params = [];
 
         for(const code of this._codes){
-            params.push(this._clean(code.innerHTML));
+            params.push({ 
+                element: code, 
+                raw: this._clean(code.innerHTML) 
+            });
         }
 
         return params;
