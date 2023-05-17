@@ -255,6 +255,8 @@ export default class TWExtension {
     }
 
     async run(): Promise<void> {
+        this._addEncryptButton();
+
         if(this._codes.length === 0){
             return;
         }
@@ -262,10 +264,6 @@ export default class TWExtension {
         const canUse = await this._check();
         if(canUse){
             await this._decode();
-    
-            if (document.getElementById('message')) {
-                this._addEncryptButton();
-            }
         }
     }
 }
