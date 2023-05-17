@@ -10,23 +10,23 @@ Decrypt automatically links on the forum ! | Web extension for Forum.ThiWeb.com
 
 Install dependencies :
 ```sh
-$ npm install
+$ pnpm install
 ```
 
 Build :
 ```
-$ npm run build
+$ pnpm run build
 ```
 
 Package for Firefox :
 ```
-$ npm run prepare-firefox # Patch Manifest V3 into V2..
-$ npm run bundle-firefox # Generate zip
+$ pnpm run prepare-firefox # Patch Manifest V3 into V2..
+$ pnpm run bundle-firefox # Generate zip
 ```
 
 Package for Chrome :
 ```
-$ npm run bundle-chrome
+$ pnpm run bundle-chrome
 ```
 
 ### Manual :
