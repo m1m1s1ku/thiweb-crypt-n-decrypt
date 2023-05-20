@@ -218,7 +218,7 @@ export default class TWExtension {
         }
 
         for(const link of links) {
-            str = str.replace(link, "<a href=\"" + link + "\">" + link + "</a>");
+            str = str.replace(link, "<a target=\"_blank\" href=\"" + link + "\">" + link + "</a>");
         }
 
         this._insertUnsafeHTML(str, codeElement);
