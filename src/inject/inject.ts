@@ -81,11 +81,18 @@ export default class TWExtension {
         if(!textarea) { return; }
         if (typeof textarea.selectionStart === 'number' && typeof textarea.selectionEnd === 'number') {
             const str = textarea.value.substring(textarea.selectionStart, textarea.selectionEnd);
+
+            let block = '';
     
-            const encrypted = await this._encrypt(str);
-            if(encrypted){
-                textarea.value = textarea.value.replace(str, `[code]${encrypted}[/code]`);
+            if(str.startsWith('TWL')) {
+                block = `[code]${str}[/code]`
+            } else {
+                const encrypted = await this._encrypt(str);
+                if(encrypted){
+                    block = `[code]${encrypted}[/code]`;
+                }
             }
+            textarea.value = textarea.value.replace(str, block);
         }
     }
 
