@@ -1,11 +1,10 @@
 {
 	"name": "thiweb-crypt-decrypt-ts",
-	"version": "2.1.8",
+	"version": "2.1.9",
 	"type": "module",
 	"scripts": {
 		"build": "tsc && vite build",
 		"bundle-chrome": "npx web-ext build --source-dir ./dist/",
-		"prepare-chrome": "tsx ./scripts/chrome-manifest.ts",
 		"prepare-firefox": "tsx ./scripts/firefox-manifest.ts",
 		"bundle-firefox": "npx web-ext build --source-dir ./dist-firefox/"
 	},
