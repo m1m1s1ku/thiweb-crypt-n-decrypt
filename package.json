@@ -10,7 +10,7 @@
 		"bundle-firefox": "npx web-ext build --source-dir ./dist-firefox/"
 	},
 	"devDependencies": {
-		"@crxjs/vite-plugin": "2.0.0-beta.17",
+		"@crxjs/vite-plugin": "2.0.0-beta.26",
 		"tsx": "^4.19.1",
 		"typescript": "^5.0.4",
 		"vite": "^4.3.7"

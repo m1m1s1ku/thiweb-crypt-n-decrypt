@@ -14,8 +14,8 @@ dependencies:
 
 devDependencies:
   '@crxjs/vite-plugin':
-    specifier: 2.0.0-beta.17
-    version: 2.0.0-beta.17
+    specifier: 2.0.0-beta.26
+    version: 2.0.0-beta.26
   tsx:
     specifier: ^4.19.1
     version: 4.19.1
@@ -56,8 +56,8 @@ packages:
       regenerator-runtime: 0.13.11
     dev: false
 
-  /@crxjs/vite-plugin@2.0.0-beta.17:
-    resolution: {integrity: sha512-44CavnsY01jvF2uHfRdqA3j6bg6IcVc+ZrSayYS+H7eqb6BHWh619A2jJ3Y0eHVh9H65041ob4g6I1VMxWx4qw==}
+  /@crxjs/vite-plugin@2.0.0-beta.26:
+    resolution: {integrity: sha512-fZiSeOB4LOwq3cLIwHJnJ4x/duBU/Gkn3JKF7b7mZIRAXtu1waorJ6QaH7qoZPcN5LzyA3J+/t3Kuwa/oo8XNg==}
     dependencies:
       '@rollup/pluginutils': 4.2.1
       '@webcomponents/custom-elements': 1.6.0
@@ -1837,14 +1837,6 @@ packages:
     resolution: {integrity: sha512-OO0pH2lK6a0hZnAdau5ItzHPI6pUlvI7jMVnxUQRtw4owF2wk8lOSabtGDCTP4Ggrg2MbGnWO9X8K1t4+fGMDw==}
     dev: false
 
-  /fsevents@2.3.2:
-    resolution: {integrity: sha512-xiqMQR4xAeHTuB9uWm+fFRcIOgKBMiOBP+eXiyT7jsgVCq1bkVygt00oASowB7EdtpOHaaPgKt812P9ab+DDKA==}
-    engines: {node: ^8.16.0 || ^10.6.0 || >=11.0.0}
-    os: [darwin]
-    requiresBuild: true
-    dev: true
-    optional: true
-
   /fsevents@2.3.3:
     resolution: {integrity: sha512-5xoDfX+fL7faATnagmWPpbFtwh/R77WmMMqqHGS65C3vvB0YHrgF+B1YmZ3441tMj5n63k0212XNoJwzlhffQw==}
     engines: {node: ^8.16.0 || ^10.6.0 || >=11.0.0}
@@ -2936,6 +2928,10 @@ packages:
   /q@1.5.1:
     resolution: {integrity: sha512-kV/CThkXo6xyFEZUugw/+pIOywXcDbFYgSct5cT3gqlbkBE1SJdwy6UQoZvodiWF/ckQLZyDE/Bu1M6gVu5lVw==}
     engines: {node: '>=0.6.0', teleport: '>=0.2.0'}
+    deprecated: |-
+      You or someone you depend on is using Q, the JavaScript Promise library that gave JavaScript developers strong feelings about promises. They can almost certainly migrate to the native JavaScript promise now. Thank you literally everyone for joining me in this bet against the odds. Be excellent to each other.
+
+      (For a CapTP with native promises, see @endo/eventual-send and @endo/captp)
     dev: true
 
   /qs@6.5.3:
@@ -3111,7 +3107,7 @@ packages:
     engines: {node: '>=10.0.0'}
     hasBin: true
     optionalDependencies:
-      fsevents: 2.3.2
+      fsevents: 2.3.3
     dev: true
 
   /rollup@3.22.0:
@@ -3119,7 +3115,7 @@ packages:
     engines: {node: '>=14.18.0', npm: '>=8.0.0'}
     hasBin: true
     optionalDependencies:
-      fsevents: 2.3.2
+      fsevents: 2.3.3
     dev: true
 
   /run-parallel@1.2.0:
@@ -3634,7 +3630,7 @@ packages:
       postcss: 8.4.23
       rollup: 3.22.0
     optionalDependencies:
-      fsevents: 2.3.2
+      fsevents: 2.3.3
     dev: true
 
   /watchpack@2.4.0:

@@ -26,7 +26,6 @@ $ pnpm run bundle-firefox # Generate zip
 
 Package for Chrome :
 ```
-$ pnpm run prepare-chrome # Patch manifest v3 web_accessible_resources
 $ pnpm run bundle-chrome
 ```
 
